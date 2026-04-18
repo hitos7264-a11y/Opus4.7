@@ -1,0 +1,154 @@
+/* ================================================================
+   tokens.css
+   Claude Code 仕様書 2026年4月18日 / モバイル特化デザインシステム
+   --------
+   このファイルでは、サイト全体で使う「デザイントークン」を
+   CSS カスタムプロパティとして定義する。色、タイポグラフィ、
+   余白、角丸、影、モーション、z-index、ブレークポイントまでを
+   一箇所に集約しているため、色の差し替えやダーク/ライトの
+   切り替えはここを触るだけで反映される設計になっている。
+   ================================================================ */
+
+:root {
+  /* ---------- Brand / Accent --------------------------------- */
+  --c-brand-50:  #fff5ec;
+  --c-brand-100: #ffe3c9;
+  --c-brand-200: #ffc794;
+  --c-brand-300: #ffa65c;
+  --c-brand-400: #ff8a2e;
+  --c-brand-500: #f26b1a;   /* 主要アクセント（Claude/Anthropic らしい暖色） */
+  --c-brand-600: #d15614;
+  --c-brand-700: #a84310;
+  --c-brand-800: #7a300b;
+  --c-brand-900: #4a1d07;
+
+  /* ---------- Secondary (cool) ------------------------------- */
+  --c-accent-500: #4b8dff;
+  --c-accent-600: #3570dd;
+  --c-accent-700: #2557b4;
+
+  /* ---------- Semantic --------------------------------------- */
+  --c-success: #2fbf71;
+  --c-warning: #ffb020;
+  --c-danger:  #ff4d4f;
+  --c-info:    #3aa9ff;
+
+  /* ---------- Neutral palette (dark theme base) -------------- */
+  --c-bg-0:   #0b0b0e;  /* ページ最背面 */
+  --c-bg-1:   #121217;  /* カード・セクション背景 */
+  --c-bg-2:   #191922;  /* 入れ子カード */
+  --c-bg-3:   #22222d;  /* hover / active 面 */
+  --c-bg-4:   #2d2d3a;
+  --c-line-1: #2a2a36;
+  --c-line-2: #3a3a49;
+  --c-fg-0:   #f6f6f8;  /* 見出し */
+  --c-fg-1:   #d7d7df;  /* 本文 */
+  --c-fg-2:   #a2a2b0;  /* 補助 */
+  --c-fg-3:   #6f6f7e;  /* 弱い */
+  --c-fg-4:   #4a4a57;  /* さらに弱い */
+
+  /* ---------- Typography ------------------------------------- */
+  --f-sans: "Inter", "Hiragino Sans", "Hiragino Kaku Gothic ProN",
+            "Noto Sans JP", "Yu Gothic UI", system-ui, -apple-system,
+            "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --f-mono: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular,
+            Menlo, Consolas, "Liberation Mono", monospace;
+
+  --fs-11: 11px;
+  --fs-12: 12px;
+  --fs-13: 13px;
+  --fs-14: 14px;
+  --fs-15: 15px;
+  --fs-16: 16px;
+  --fs-18: 18px;
+  --fs-20: 20px;
+  --fs-22: 22px;
+  --fs-26: 26px;
+  --fs-30: 30px;
+  --fs-36: 36px;
+  --fs-44: 44px;
+
+  --lh-tight: 1.22;
+  --lh-normal: 1.55;
+  --lh-loose: 1.85;
+
+  --fw-reg: 400;
+  --fw-med: 500;
+  --fw-semi: 600;
+  --fw-bold: 700;
+
+  /* ---------- Spacing scale (4px base) ----------------------- */
+  --sp-0: 0;
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-7: 32px;
+  --sp-8: 40px;
+  --sp-9: 48px;
+  --sp-10: 64px;
+  --sp-11: 80px;
+
+  /* ---------- Radius ---------------------------------------- */
+  --r-xs: 4px;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 22px;
+  --r-pill: 999px;
+
+  /* ---------- Shadow ---------------------------------------- */
+  --sh-1: 0 1px 2px rgba(0,0,0,.35);
+  --sh-2: 0 4px 10px rgba(0,0,0,.45);
+  --sh-3: 0 10px 24px rgba(0,0,0,.5);
+  --sh-glow-brand: 0 0 0 1px rgba(242,107,26,.35), 0 8px 20px rgba(242,107,26,.18);
+  --sh-glow-accent: 0 0 0 1px rgba(75,141,255,.35), 0 8px 20px rgba(75,141,255,.18);
+
+  /* ---------- Motion ---------------------------------------- */
+  --ease-out: cubic-bezier(.2,.8,.2,1);
+  --ease-in:  cubic-bezier(.6,.2,.9,.4);
+  --ease-io:  cubic-bezier(.5,.1,.25,1);
+  --dur-1: 120ms;
+  --dur-2: 200ms;
+  --dur-3: 320ms;
+  --dur-4: 500ms;
+  --dur-5: 800ms;
+
+  /* ---------- Layout ---------------------------------------- */
+  --max-w-phone: 520px;   /* スマホ特化、広くてもここまで */
+  --max-w-read: 720px;
+  --nav-h: 56px;
+  --tabbar-h: 64px;
+  --safe-bottom: env(safe-area-inset-bottom, 0);
+  --safe-top: env(safe-area-inset-top, 0);
+
+  /* ---------- Z-index --------------------------------------- */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-sticky: 50;
+  --z-overlay: 80;
+  --z-drawer: 90;
+  --z-modal: 100;
+  --z-toast: 120;
+}
+
+/* ---------- Light mode (手動切り替え) -------------------------- */
+:root[data-theme="light"] {
+  --c-bg-0: #fafaf7;
+  --c-bg-1: #ffffff;
+  --c-bg-2: #f3f3ee;
+  --c-bg-3: #e8e8e0;
+  --c-bg-4: #dadad2;
+  --c-line-1: #e2e2d9;
+  --c-line-2: #cfcfc5;
+  --c-fg-0: #141418;
+  --c-fg-1: #2a2a30;
+  --c-fg-2: #565662;
+  --c-fg-3: #7a7a88;
+  --c-fg-4: #a6a6b2;
+  --sh-1: 0 1px 2px rgba(0,0,0,.06);
+  --sh-2: 0 4px 10px rgba(0,0,0,.08);
+  --sh-3: 0 10px 24px rgba(0,0,0,.12);
+}

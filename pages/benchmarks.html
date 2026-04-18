@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ja" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+<meta name="theme-color" content="#0b0b0e">
+<title>ベンチマーク総覧 — Claude Opus 4.7 仕様書</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/charts.css">
+<link rel="stylesheet" href="../css/anim.css">
+</head>
+<body>
+<header class="appbar" id="appbar"></header>
+<main class="app-shell">
+  <div class="page">
+    <a class="backlink" href="../index.html"><i class="fa-solid fa-chevron-left"></i> ホームに戻る</a>
+
+    <div class="section__head reveal">
+      <div class="section__kicker">6 / 16 · BENCHMARKS</div>
+      <h1 class="section__title">ベンチマーク総覧</h1>
+      <p class="section__lead">
+        コーディング／エージェント／知識労働／長ctx retrieval／ビジョン／サイバー系を横断的に。
+        データ系は <code>js/data.js</code> に集約され、ページ読込時にバーがアニメーションで伸びる。
+      </p>
+    </div>
+
+    <!-- segment nav -->
+    <div class="segment reveal" data-target=".bench-panel" role="tablist" style="margin-bottom: var(--sp-5);">
+      <button class="segment__btn is-active" data-panel="coding">コーディング</button>
+      <button class="segment__btn" data-panel="knowledge">知識/科学</button>
+      <button class="segment__btn" data-panel="vision">ビジョン</button>
+      <button class="segment__btn" data-panel="longctx">長ctx</button>
+      <button class="segment__btn" data-panel="cyber">サイバー</button>
+    </div>
+
+    <!-- Coding panel -->
+    <section class="section bench-panel" data-panel="coding">
+      <h2 class="section__title">コーディング / エージェント</h2>
+      <div id="chart-coding" class="barchart reveal"></div>
+      <div class="legend">
+        <span class="legend__item"><span class="legend__sw legend__sw--brand"></span>Opus 4.7</span>
+        <span class="legend__item"><span class="legend__sw legend__sw--gray"></span>Opus 4.6</span>
+      </div>
+      <div class="callout callout--ok reveal" style="margin-top:var(--sp-4);">
+        <div class="callout__icon"><i class="fa-solid fa-circle-check"></i></div>
+        <div>
+          <div class="callout__title">コーディングは全面的に進化</div>
+          <div class="callout__body">
+            SWE-bench Verified +6.8pt / SWE-bench Pro +10.9pt / CursorBench +12pt。
+            Terminal-Bench 2.0 も +4pt。Finance Agent では GPT-5.4 Pro / Gemini 3.1 Pro を上回る。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Knowledge panel -->
+    <section class="section bench-panel" data-panel="knowledge" hidden>
+      <h2 class="section__title">知識労働 / 科学推論</h2>
+      <div id="chart-knowledge" class="barchart reveal"></div>
+      <div class="callout callout--warn reveal" style="margin-top:var(--sp-4);">
+        <div class="callout__icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div>
+          <div class="callout__title">一部退行あり</div>
+          <div class="callout__body">
+            Thematic Generalization Benchmark (high) は 80.6 → 72.8 と下がる。
+            BrowseComp も 83.7% → 79.3% と、ウェブリサーチ型で GPT-5.4 Pro / Gemini 3.1 Pro に水をあけられる。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vision panel -->
+    <section class="section bench-panel" data-panel="vision" hidden>
+      <h2 class="section__title">ビジョン</h2>
+      <div id="chart-vision" class="barchart reveal"></div>
+      <p class="reveal" style="color:var(--c-fg-2);font-size:var(--fs-13);">
+        社内視覚精度ベンチ XBOW は 54.5% → 98.5%。
+        93 タスクから成る社内コーディングベンチマークでも、視覚解像度の向上だけで解決率が 13pt 押し上げられている。
+      </p>
+    </section>
+
+    <!-- Long ctx panel -->
+    <section class="section bench-panel" data-panel="longctx" hidden>
+      <h2 class="section__title">長コンテキスト retrieval</h2>
+      <div class="barchart reveal">
+        <div class="barchart__row">
+          <span class="barchart__label">総合 4.6</span>
+          <div class="barchart__track"><div class="barchart__fill barchart__fill--gray" data-fill="91.9"></div></div>
+          <span class="barchart__value">91.9%</span>
+        </div>
+        <div class="barchart__row">
+          <span class="barchart__label">総合 4.7</span>
+          <div class="barchart__track"><div class="barchart__fill barchart__fill--gold" data-fill="59.2"></div></div>
+          <span class="barchart__value">59.2%</span>
+        </div>
+        <div class="barchart__row">
+          <span class="barchart__label">524k-1024k 4.6</span>
+          <div class="barchart__track"><div class="barchart__fill barchart__fill--gray" data-fill="78.3"></div></div>
+          <span class="barchart__value">78.3%</span>
+        </div>
+        <div class="barchart__row">
+          <span class="barchart__label">524k-1024k 4.7</span>
+          <div class="barchart__track"><div class="barchart__fill barchart__fill--gold" data-fill="32.2"></div></div>
+          <span class="barchart__value">32.2%</span>
+        </div>
+      </div>
+      <div class="callout callout--danger reveal" style="margin-top:var(--sp-4);">
+        <div class="callout__icon"><i class="fa-solid fa-circle-exclamation"></i></div>
+        <div>
+          <div class="callout__title">最も議論を呼んだ退行</div>
+          <div class="callout__body">
+            Anthropic は「以前の評価が甘かった」と説明するが、現場では「実質的な退行」との批判も。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cyber panel -->
+    <section class="section bench-panel" data-panel="cyber" hidden>
+      <h2 class="section__title">サイバー系（Mythos 参照）</h2>
+      <div id="chart-cyber" class="barchart reveal"></div>
+      <div class="legend">
+        <span class="legend__item"><span class="legend__sw legend__sw--gray"></span>Opus 4.6</span>
+        <span class="legend__item"><span class="legend__sw legend__sw--brand"></span>Opus 4.7</span>
+        <span class="legend__item"><span class="legend__sw legend__sw--gold"></span>Mythos</span>
+      </div>
+      <p class="reveal" style="color:var(--c-fg-2);font-size:var(--fs-13);margin-top:var(--sp-3);">
+        CyberGym は攻撃再現性を測るベンチ。Opus 4.7 の CyberGym スコアは
+        公開されていないが、Mythos は 83.1%（4.6: 66.6%）と一段高い。
+        これが「Mythos の天井を意図的に抑えた」と言われる根拠のひとつ。
+      </p>
+    </section>
+
+    <!-- 競合ひと覧 -->
+    <section class="section">
+      <h2 class="section__title">vs GPT-5.4 Pro / Gemini 3.1 Pro（抜粋）</h2>
+      <div class="table-wrap reveal">
+        <table class="table table--compact">
+          <thead>
+            <tr><th>ベンチ</th><th>Opus 4.7</th><th>GPT-5.4 P.</th><th>Gemini 3.1 P.</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>GPQA Diamond</td><td><strong>94.2</strong></td><td>94.4</td><td>94.3</td></tr>
+            <tr><td>GDPVal-AA (Elo)</td><td><strong>1753</strong></td><td>1674</td><td>1314</td></tr>
+            <tr><td>Finance Agent</td><td><strong>64.4</strong></td><td>61.5</td><td>59.7</td></tr>
+            <tr><td>BrowseComp</td><td>79.3</td><td><strong>89.3</strong></td><td>85.9</td></tr>
+            <tr><td>Terminal-Bench 2.0</td><td>69.4</td><td><strong>75.1</strong></td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="reveal" style="color:var(--c-fg-2);font-size:var(--fs-13);">
+        VentureBeat の集計では、直接比較可能なベンチ上の Opus 4.7 vs GPT-5.4 は<strong> 7 勝 4 敗 </strong>。
+        王座は僅差で奪還されたが、開いていた差はもはや存在しない。
+      </p>
+    </section>
+
+    <div class="pager">
+      <a class="pager__btn" href="vision.html"><small>← PREV</small><strong>ビジョン</strong></a>
+      <a class="pager__btn pager__btn--next" href="safety.html"><small>NEXT →</small><strong>安全性</strong></a>
+    </div>
+  </div>
+</main>
+<div id="drawer-root"></div>
+<nav class="tabbar" id="tabbar"></nav>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/benchmarks.js"></script>
+<script>OPUS47_UI.init("bench", "ベンチマーク");</script>
+</body></html>

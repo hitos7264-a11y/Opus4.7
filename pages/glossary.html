@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="ja" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+<meta name="theme-color" content="#0b0b0e">
+<title>用語集 — Claude Opus 4.7 仕様書</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/charts.css">
+<link rel="stylesheet" href="../css/anim.css">
+</head>
+<body>
+<header class="appbar" id="appbar"></header>
+<main class="app-shell">
+  <div class="page">
+    <a class="backlink" href="../index.html"><i class="fa-solid fa-chevron-left"></i> ホームに戻る</a>
+
+    <div class="section__head reveal">
+      <div class="section__kicker">15 / 16 · GLOSSARY</div>
+      <h1 class="section__title">用語集</h1>
+      <p class="section__lead">本仕様書で頻出する用語・略語の定義。</p>
+    </div>
+
+    <section class="section">
+      <div class="accordion reveal">
+
+        <div class="accordion__item"><button class="accordion__head"><span>Adaptive Thinking</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            Opus 4.7 で導入された、思考配分をモデル側で最適化する仕組み。
+            ユーザーは <code>effort</code> だけを指定し、<code>budget_tokens</code> のような細かい指定は不可。
+          </div></div>
+        </div>
+
+        <div class="accordion__item"><button class="accordion__head"><span>effort</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            思考の強さを決める単一のダイヤル。low / medium / high / xhigh / max の 5 段階。
+          </div></div>
+        </div>
+
+        <div class="accordion__item"><button class="accordion__head"><span>xhigh</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            4.7 で新設された effort 段階。high と max の中間で、長時間エージェント・
+            Claude Code の既定。探索的ツール呼び出しを積極化。
+          </div></div>
+        </div>
+
+        <div class="accordion__item"><button class="accordion__head"><span>Claude Mythos / Project Glasswing</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            Mythos は限定プレビューで動いている高能力 Claude。
+            Project Glasswing は重要ソフトウェアの保護を目的とする Anthropic の取り組みで、
+            Mythos はその中核 AI。
+          </div></div>
+        </div>
+
+        <div class="accordion__item"><button class="accordion__head"><span>System Card</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            Anthropic が公表するモデルの詳細評価ドキュメント。Opus 4.7 のものは 232 ページ。
+            アライメント評価、安全性、既知のリスク、訓練時の事故などを開示。
+          </div></div>
+        </div>
+
+        <div class="accordion__item"><button class="accordion__head"><span>Real-time Cyber Safeguards</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            サイバー高リスク用途をリアルタイムに検出・遮断する機構。4.7 で実戦投入。
+          </div></div>
+        </div>
+
+        <div class="accordion__item"><button class="accordion__head"><span>Cyber Verification Program</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            正当な用途（脆弱性研究、ペネトレ、レッドチーム）向けに、
+            Cyber Safeguards の対象カテゴリーを解放するための審査登録制度。
+          </div></div>
+        </div>
+
+        <div class="accordion__item"><button class="accordion__head"><span>CyberGym</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            攻撃再現性を測るベンチマーク。4.6 が 66.6%、Mythos が 83.1%。4.7 は非公開。
+          </div></div>
+        </div>
+
+        <div class="accordion__item"><button class="accordion__head"><span>SWE-bench Verified / Pro</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            ソフトウェアエンジニアリング能力を測る代表的ベンチ。
+            Verified は正解が厳密検証された版、Pro はより難度が高く多言語を含む拡張版。
+          </div></div>
+        </div>
+
+        <div class="accordion__item"><button class="accordion__head"><span>XBOW</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            Anthropic 社内の視覚精度ベンチ。小さな文字や細密図形の読取り課題で、
+            4.7 は 98.5%、4.6 は 54.5%。
+          </div></div>
+        </div>
+
+        <div class="accordion__item"><button class="accordion__head"><span>Terminal-Bench 2.0</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            ターミナル操作を含むエージェント評価。4.7: 69.4%、GPT-5.4: 75.1%。
+          </div></div>
+        </div>
+
+        <div class="accordion__item"><button class="accordion__head"><span>OSWorld-Verified</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            コンピュータ操作を総合評価する OSWorld の検証済み版。4.7: 78.0%。
+          </div></div>
+        </div>
+
+        <div class="accordion__item"><button class="accordion__head"><span>MCP-Atlas</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            Model Context Protocol（MCP）を使ったエージェント運用を測るベンチ。
+            4.7: 77.3%。
+          </div></div>
+        </div>
+
+        <div class="accordion__item"><button class="accordion__head"><span>GDPVal-AA</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            「知識労働」型評価。Elo スコアで測定。4.7: 1753、GPT-5.4: 1674、Gemini 3.1 Pro: 1314。
+          </div></div>
+        </div>
+
+        <div class="accordion__item"><button class="accordion__head"><span>BrowseComp</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            ウェブリサーチ型のベンチ。4.7: 79.3%、GPT-5.4 Pro: 89.3%、Gemini 3.1 Pro: 85.9%。
+          </div></div>
+        </div>
+
+        <div class="accordion__item"><button class="accordion__head"><span>Thematic Generalization Benchmark (TGB)</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            主題横断的な一般化能力を測るベンチ。high effort で 80.6 → 72.8 と退行したことが
+            r/singularity で話題に。
+          </div></div>
+        </div>
+
+        <div class="accordion__item"><button class="accordion__head"><span>Intelligence Index v4.0</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            Artificial Analysis が公表する複合スコア。Opus 4.7 (max) は 57。
+          </div></div>
+        </div>
+
+        <div class="accordion__item"><button class="accordion__head"><span>Finance Agent v1.1</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            金融業務エージェントの評価。Anthropic が社内で重視。4.7: 64.4%。
+          </div></div>
+        </div>
+
+        <div class="accordion__item"><button class="accordion__head"><span>BigLaw Bench</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            法務系長文書面レビューを測るベンチ。4.7 high effort で 90.9%。
+          </div></div>
+        </div>
+
+        <div class="accordion__item"><button class="accordion__head"><span>Prompt Caching / Batch API</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            Anthropic の価格割引機構。キャッシュで入力最大 90% OFF、
+            バッチ処理でさらに 50% 割引を積める。
+          </div></div>
+        </div>
+
+        <div class="accordion__item"><button class="accordion__head"><span>Tokenizer Inflation</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            新トークナイザによって同一ペイロードで 1.00〜1.35× のトークン数増が起きる現象。
+            FinOps 上の最大の伏兵。
+          </div></div>
+        </div>
+
+        <div class="accordion__item"><button class="accordion__head"><span>Claude Code</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            Anthropic のコーディング特化エージェント体験。
+            Opus 4.7 では既定の effort が xhigh に昇格。
+          </div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="pager">
+      <a class="pager__btn" href="timeline.html"><small>← PREV</small><strong>タイムライン</strong></a>
+      <a class="pager__btn pager__btn--next" href="sources.html"><small>NEXT →</small><strong>出典</strong></a>
+    </div>
+  </div>
+</main>
+<div id="drawer-root"></div>
+<nav class="tabbar" id="tabbar"></nav>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script>OPUS47_UI.init("glossary", "用語集");</script>
+</body></html>

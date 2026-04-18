@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ja" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+<meta name="theme-color" content="#0b0b0e">
+<title>概要とポジション — Claude Opus 4.7 仕様書</title>
+<meta name="description" content="Claude Opus 4.7 の位置付け、Opus 4.6 / Mythos / Project Glasswing との関係、Anthropic が『天井をあえて抑えた』意図まで。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/charts.css">
+<link rel="stylesheet" href="../css/anim.css">
+</head>
+<body>
+<header class="appbar" id="appbar"></header>
+<main class="app-shell">
+  <div class="page">
+    <a class="backlink" href="../index.html"><i class="fa-solid fa-chevron-left"></i> ホームに戻る</a>
+
+    <div class="section__head reveal">
+      <div class="section__kicker">1 / 16 · OVERVIEW</div>
+      <h1 class="section__title">概要とポジション</h1>
+      <p class="section__lead">
+        Opus 4.7 は Opus 4 系列の「完成チューンアップ」でありつつ、
+        未公開の Mythos Preview を前に置いた <strong>意図的な天井抑制モデル</strong>として出された。
+      </p>
+    </div>
+
+    <!-- 主要事実 -->
+    <section class="section">
+      <div class="grid grid--2 stagger">
+        <div class="stat">
+          <span class="stat__label">公開日</span>
+          <span class="stat__value" style="font-size:18px;">2026-04-16</span>
+          <span class="stat__delta is-flat">米時間 木曜</span>
+        </div>
+        <div class="stat">
+          <span class="stat__label">前世代</span>
+          <span class="stat__value" style="font-size:18px;">Opus 4.6</span>
+          <span class="stat__delta is-flat">2026-02 公開</span>
+        </div>
+        <div class="stat">
+          <span class="stat__label">姉妹モデル</span>
+          <span class="stat__value" style="font-size:14px;">Mythos Preview</span>
+          <span class="stat__delta is-flat">Project Glasswing</span>
+        </div>
+        <div class="stat">
+          <span class="stat__label">System Card</span>
+          <span class="stat__value">232<small style="font-size:12px;">p</small></span>
+          <span class="stat__delta is-flat">PDF 公開</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 位置付け -->
+    <section class="section">
+      <h2 class="section__title">「天井をあえて抑える」という思想</h2>
+      <p class="reveal">
+        Anthropic は 2026 年 4 月初頭から、<strong>Claude Mythos Preview</strong>
+        をごく一部の選ばれた企業だけに解放する動きを始めていた。
+        Project Glasswing という取り組みのなかで動いていたこの Mythos は、
+        攻撃再現性を測る CyberGym で <strong>83.1%</strong>（4.6 は 66.6%）、
+        SWE-bench Verified で <strong>93.9%</strong> という水準。
+      </p>
+      <p class="reveal">
+        Anthropic はこれを広く放つ決断をまだ下しておらず、代わりに「Mythos 級モデルを
+        将来どう安全に展開するか」を学ぶための <em>露払い</em> として、
+        能力を少し絞ってセーフガードを実戦投入した形で用意したのが Opus 4.7。
+        CNBC が報じた Dario Amodei の説明では、4.7 は
+        <strong>「Mythos ほど包括的に強くはないが、生産環境で安心して任せられる、
+        現時点で一般公開されているもっとも有能な Claude」</strong>という役回り。
+      </p>
+
+      <div class="callout callout--info reveal">
+        <div class="callout__icon"><i class="fa-solid fa-lightbulb"></i></div>
+        <div>
+          <div class="callout__title">この仕様書の背景理解</div>
+          <div class="callout__body">
+            ベンチマークの「最強値」ではなく、<strong>安全に本番投入できるもっとも強いモデル</strong>
+            という基準に競争軸が移っている、という前提で 4.7 の仕様は読む必要がある。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 三モデル比較 -->
+    <section class="section">
+      <h2 class="section__title">三者関係：4.6 / 4.7 / Mythos</h2>
+      <div class="table-wrap reveal">
+        <table class="table">
+          <thead>
+            <tr><th></th><th>Opus 4.6</th><th>Opus 4.7</th><th>Mythos</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>公開</td><td>2026-02</td><td>2026-04-16</td><td>限定プレビュー</td></tr>
+            <tr><td>CyberGym</td><td>66.6%</td><td>—</td><td><strong>83.1%</strong></td></tr>
+            <tr><td>SWE Verified</td><td>80.8%</td><td><strong>87.6%</strong></td><td>93.9%</td></tr>
+            <tr><td>honesty</td><td>—</td><td><strong>92%</strong></td><td>95.4%</td></tr>
+            <tr><td>一般公開</td><td>◯</td><td>◯</td><td>×</td></tr>
+            <tr><td>性格</td><td>気配り</td><td>厳格</td><td>強力</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 主要変化サマリ -->
+    <section class="section">
+      <h2 class="section__title">Opus 4.7 が持ち込んだ変化</h2>
+      <div class="accordion reveal">
+        <div class="accordion__item">
+          <button class="accordion__head">
+            <span><i class="fa-solid fa-yen-sign" style="color:var(--c-brand-400);margin-right:8px;"></i>価格は据え置き、実請求は上がる</span>
+            <i class="fa-solid fa-chevron-down chev"></i>
+          </button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            $5 / $25 per MTok は不変。新トークナイザで 1.00〜1.35× のインフレが発生。
+            コードや構造化データ、非英語テキストでは特に膨張率が大きい。
+          </div></div>
+        </div>
+        <div class="accordion__item">
+          <button class="accordion__head">
+            <span><i class="fa-solid fa-brain" style="color:var(--c-brand-400);margin-right:8px;"></i>effort に xhigh を新設</span>
+            <i class="fa-solid fa-chevron-down chev"></i>
+          </button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            low / medium / high / <strong>xhigh</strong> / max の五段階。
+            Claude Code の既定は全プランで xhigh に昇格。
+            一方で <code>budget_tokens</code> は廃止、<code>temperature</code> 等は固定化。
+          </div></div>
+        </div>
+        <div class="accordion__item">
+          <button class="accordion__head">
+            <span><i class="fa-solid fa-eye" style="color:var(--c-brand-400);margin-right:8px;"></i>視覚解像度が約 3 倍に拡大</span>
+            <i class="fa-solid fa-chevron-down chev"></i>
+          </button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            長辺 1,568px → 2,576px、画素数ベースで約 3.25 倍。
+            XBOW は 54.5% → 98.5%、社内コーディング 93 タスクは +13pt。
+          </div></div>
+        </div>
+        <div class="accordion__item">
+          <button class="accordion__head">
+            <span><i class="fa-solid fa-align-left" style="color:var(--c-brand-400);margin-right:8px;"></i>長ctx retrieval は退行</span>
+            <i class="fa-solid fa-chevron-down chev"></i>
+          </button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            総合 91.9% → 59.2%。524k〜1024k 帯では 78.3% → 32.2%。
+            Anthropic は「以前の評価が甘かった」という立場だが、現場では賛否。
+          </div></div>
+        </div>
+        <div class="accordion__item">
+          <button class="accordion__head">
+            <span><i class="fa-solid fa-shield-halved" style="color:var(--c-brand-400);margin-right:8px;"></i>リアルタイム Cyber Safeguards</span>
+            <i class="fa-solid fa-chevron-down chev"></i>
+          </button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            サイバー高リスク用途の自動遮断を導入。Cyber Verification Program で
+            正当な研究者には解除する運用。
+          </div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 行で -->
+    <section class="section">
+      <h2 class="section__title">3 行でまとめる</h2>
+      <div class="card card--gradient reveal">
+        <ol style="margin:0 0 0 18px; padding:0;">
+          <li>Opus 4.7 は「Mythos の技術を意図的に鈍らせた安全な公開モデル」。</li>
+          <li>価格は同じだが、トークナイザ・推論設計・思考表示がすべて静かに変わっている。</li>
+          <li>ベンチ総合首位を <em>僅差で</em> 奪還したが、万能ではなく「上流専用」の運用が推奨。</li>
+        </ol>
+      </div>
+    </section>
+
+    <div class="pager">
+      <a class="pager__btn" href="../index.html"><small>← PREV</small><strong>ホーム</strong></a>
+      <a class="pager__btn pager__btn--next" href="pricing.html"><small>NEXT →</small><strong>価格 &amp; FinOps</strong></a>
+    </div>
+  </div>
+</main>
+<div id="drawer-root"></div>
+<nav class="tabbar" id="tabbar"></nav>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script>OPUS47_UI.init("overview", "概要");</script>
+</body></html>

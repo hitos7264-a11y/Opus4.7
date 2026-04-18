@@ -1,0 +1,106 @@
+今回の調査で精読した主要な出典を、カテゴリごとに整理してすべて記載します。
+
+【一次情報：Anthropic 公式】
+
+Introducing Claude Opus 4.7 — Anthropic 公式アナウンスメント https://www.anthropic.com/news/claude-opus-4-7
+
+Claude Opus 4.7 — Anthropic 公式モデルページ https://www.anthropic.com/claude/opus
+
+What's new in Claude Opus 4.7 — Anthropic Platform Docs https://platform.claude.com/docs/en/about-claude/models/whats-new-claude-4-7
+
+Adaptive thinking — Claude API Docs https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking
+
+Pricing — Claude API Docs https://platform.claude.com/docs/en/about-claude/pricing
+
+Project Glasswing: Securing critical software for the AI era — Anthropic https://www.anthropic.com/glasswing
+
+Real-time cyber safeguards on Claude — Anthropic サポート https://support.claude.com/en/articles/14604842-real-time-cyber-safeguards-on-claude
+
+Claude Opus 4.7 System Card（232 ページ PDF） https://cdn.sanity.io/files/4zrzovbb/website/037f06850df7fbe871e206dad004c3db5fd50340.pdf
+
+【クラウドベンダー／プラットフォーム公式発表】
+
+Introducing Anthropic's Claude Opus 4.7 model in Amazon Bedrock — AWS News Blog https://aws.amazon.com/blogs/aws/introducing-anthropics-claude-opus-4-7-model-in-amazon-bedrock/
+
+Claude Opus 4.7 — AI Model Catalog | Microsoft Foundry Models https://ai.azure.com/catalog/models/claude-opus-4-7
+
+Announcing Claude Opus 4.7 on Snowflake Cortex AI — Snowflake Blog https://www.snowflake.com/en/blog/claude-opus-4-7-snowflake-cortex-ai/
+
+Claude Opus 4.7 is generally available — GitHub Changelog https://github.blog/changelog/2026-04-16-claude-opus-4-7-is-generally-available/
+
+Claude Opus 4.7 — API Pricing & Providers — OpenRouter https://openrouter.ai/anthropic/claude-opus-4.7
+
+【報道メディア】
+
+Anthropic releases Claude Opus 4.7, a less risky model than Mythos — CNBC（2026年4月16日） https://www.cnbc.com/2026/04/16/anthropic-claude-opus-4-7-model-mythos.html
+
+Anthropic releases Claude Opus 4.7, narrowly retaking lead for most powerful generally available LLM — VentureBeat https://venturebeat.com/technology/anthropic-releases-claude-opus-4-7-narrowly-retaking-lead-for-most-powerful-generally-available-llm
+
+Anthropic launches Opus 4.7 with better coding and 13% vision gain — Interesting Engineering https://interestingengineering.com/ai-robotics/claude-opus-4-7-coding-vision-upgrade
+
+Anthropic releases Claude Opus 4.7 with automated cybersecurity safeguards — Help Net Security https://www.helpnetsecurity.com/2026/04/16/claude-opus-4-7-released/
+
+Claude Opus 4.7 hits 92% honesty rate — The Economic Times https://m.economictimes.com/news/international/us/claude-opus-4-7-hits-92-honesty-rate-are-we-closer-than-ever-to-human-like-ai-with-less-hallucination-heres-what-anthropics-new-ai-model-is-capable-of/articleshow/130341842.cms
+
+Claude Opus 4.7 launched: Smarter, safer AI — The Economic Times https://m.economictimes.com/news/international/us/claude-opus-4-7-launched-smarter-safer-ai-but-why-isnt-it-more-powerful-than-anthropics-claude-mythos-explained/articleshow/130311408.cms
+
+Is Claude Mythos and Project Glasswing a PR stunt? Experts weigh in — Mashable https://mashable.com/article/claude-mythos-preview-project-glasswing-pr-stunt-cybersecurity-experts
+
+【ベンチマーク・分析サイト】
+
+Claude Opus 4.7 Benchmarks Explained — Vellum AI https://www.vellum.ai/blog/claude-opus-4-7-benchmarks-explained
+
+Claude Opus 4.7: Pricing, Benchmarks & Performance — LLM Stats https://llm-stats.com/models/claude-opus-4-7
+
+Claude Opus 4.7 Benchmarks 2026: Scores, Rankings & Performance — BenchLM.ai https://benchlm.ai/models/claude-opus-4-7
+
+Claude Opus 4.7 (max) — Intelligence, Performance & Price Analysis — Artificial Analysis https://artificialanalysis.ai/models/claude-opus-4-7
+
+Claude Opus 4.7: Model Specifications and Details — apxml.com https://apxml.com/models/claude-opus-47
+
+【FinOps・コスト解析】
+
+Claude Opus 4.7 Pricing: The Real Cost Story Behind the "Unchanged Price Tag" — Finout https://www.finout.io/blog/claude-opus-4.7-pricing-the-real-cost-story-behind-the-unchanged-price-tag
+【技術解説・移行ガイド】
+
+Claude Opus 4.7 Deep Dive: Capabilities, Migration, and the New Economics of Long-Running Agents — Caylent https://caylent.com/blog/claude-opus-4-7-deep-dive-capabilities-migration-and-the-new-economics-of-long-running-agents
+
+Detailed explanation of Claude Opus 4.7 xhigh mode: A practical guide — APIYI Help Center https://help.apiyi.com/en/claude-opus-4-7-xhigh-effort-mode-explained-en.html
+
+Claude Opus 4.7 Is Here and It Changes the Coding Model Race — HackerNoon https://hackernoon.com/claude-opus-47-is-here-and-it-changes-the-coding-model-race
+
+【開発者レビュー・個人ブログ】
+
+Claude Opus 4.7 Review: What It Really Means for Your Work (2026) — Karo Zieminski（Substack） https://karozieminski.substack.com/p/claude-opus-4-7-review-tutorial-builders
+
+Opus 4.7 Is The Worst Release Anthropic Has Ever Shipped — Medium / Vibe Coding https://medium.com/vibe-coding/opus-4-7-is-the-worst-release-anthropic-has-ever-shipped-12772c21ca1e
+
+Claude Opus 4.7 vs Claude Mythos — Medium / Data Science in Your Pocket https://medium.com/data-science-in-your-pocket/claude-opus-4-7-vs-claude-mythos-f70a98643c00
+
+[AINews] Anthropic Claude Opus 4.7 — literally one step better than... — Latent Space https://www.latent.space/p/ainews-anthropic-claude-opus-47-literally
+
+Claude Mythos #2: Cybersecurity and Project Glasswing — The Zvi（Substack） https://thezvi.substack.com/p/claude-mythos-2-cybersecurity-and
+
+【Mythos／Project Glasswing 関連の背景資料】
+
+Claude Mythos and Project Glasswing: why an AI superhacker has the tech world on alert — The Conversation https://theconversation.com/claude-mythos-and-project-glasswing-why-an-ai-superhacker-has-the-tech-world-on-alert-280374
+
+Claude Mythos & Project Glasswing: When AI Gets... — Till Freitag Blog https://till-freitag.com/en/blog/anthropic-mythos-glasswing-analysis
+
+Project Glasswing, Claude Mythos and what "Secure AI" really means for organisations — Version 1 https://www.version1.com/en-us/blog/project-glasswing-claude-mythos-and-what-secure-ai-really-means-for-organisations/
+
+【コミュニティ／フォーラム議論】
+
+Claude Opus 4.7 Model Card — Hacker News https://news.ycombinator.com/item?id=47793546
+
+Claude Opus 4.7 (high) unexpectedly performs significantly worse than Opus 4.6 (high) on the Thematic Generalization Benchmark — r/singularity https://www.reddit.com/r/singularity/comments/1snlp29/claude_opus_47_high_unexpectedly_performs/
+
+Opus 4.7 is 50% more expensive with context regression?! — r/ClaudeAI https://www.reddit.com/r/ClaudeAI/comments/1sn8ovi/opus_47_is_50_more_expensive_with_context/
+
+Claude Opus 4.7 is a serious regression, not an upgrade — r/ClaudeAI https://www.reddit.com/r/ClaudeAI/comments/1snhfzd/claude_opus_47_is_a_serious_regression_not_an/
+
+Introducing Claude Opus 4.7, our most capable Opus model yet — r/ClaudeAI https://www.reddit.com/r/ClaudeAI/comments/1sn57af/introducing_claude_opus_47_our_most_capable_opus/
+
+Ethan Mollick's Post on Opus 4.7 adaptive reasoning — LinkedIn https://www.linkedin.com/posts/emollick_the-new-claude-opus-47-now-only-has-an-activity-7450636076924338177-Wsyl
+
+以上、本回答の作成にあたって参照した計 43 件 の出典になります。一次情報（Anthropic 公式）、クラウドベンダーのローンチ発表、主要経済・技術メディアの報道、独立系ベンチマーカー、FinOps 系コスト解析、個人開発者レビュー、Mythos／Project Glasswing の背景資料、そして Hacker News・Reddit・LinkedIn でのコミュニティ反応までを横断しており、特に回答本文中の定量的な数値（SWE-bench Verified の 87.6%、長コンテキスト retrieval の 91.9% → 59.2%、視覚解像度 2,576 ピクセル、honesty rate 92%、トークナイザ 1.0〜1.35 倍、新 xhigh effort 段階の挙動など）は、複数の出典でクロスチェックしたものだけを採用しています。

@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="ja" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+<meta name="theme-color" content="#0b0b0e">
+<title>安全性 &amp; Mythos — Claude Opus 4.7 仕様書</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/charts.css">
+<link rel="stylesheet" href="../css/anim.css">
+</head>
+<body>
+<header class="appbar" id="appbar"></header>
+<main class="app-shell">
+  <div class="page">
+    <a class="backlink" href="../index.html"><i class="fa-solid fa-chevron-left"></i> ホームに戻る</a>
+
+    <div class="section__head reveal">
+      <div class="section__kicker">7 / 16 · SAFETY &amp; MYTHOS</div>
+      <h1 class="section__title">安全性 &amp; Mythos / Glasswing</h1>
+      <p class="section__lead">
+        リアルタイム Cyber Safeguards、Cyber Verification Program、
+        そして Project Glasswing の背後に控える Claude Mythos Preview。
+      </p>
+    </div>
+
+    <!-- Gauge -->
+    <section class="section">
+      <div class="grid grid--2 stagger">
+        <div class="gauge">
+          <div class="gauge__ring" data-value="92">
+            <span class="gauge__val">0%</span>
+          </div>
+          <div class="gauge__label">Opus 4.7 honesty</div>
+        </div>
+        <div class="gauge">
+          <div class="gauge__ring" data-value="95.4">
+            <span class="gauge__val">0%</span>
+          </div>
+          <div class="gauge__label">Mythos honesty</div>
+        </div>
+      </div>
+      <p class="reveal" style="text-align:center; color:var(--c-fg-2); font-size:var(--fs-13); margin-top:var(--sp-4);">
+        Anthropic 内部の honesty rate 指標。4.7 の 92% は「一般公開モデルの中では過去最高」、
+        Mythos の 95.4% は限定プレビューでの数値。
+      </p>
+    </section>
+
+    <!-- Safeguards -->
+    <section class="section">
+      <h2 class="section__title">Real-time Cyber Safeguards</h2>
+      <div class="card card--info reveal">
+        <div class="card__label"><i class="fa-solid fa-shield"></i> リアルタイム検出</div>
+        <div class="card__title">サイバー高リスク用途を自動で検出・遮断</div>
+        <div class="card__desc">
+          サイバーセキュリティ領域の禁止用途や高リスク用途に相当するリクエストを
+          <strong>リアルタイムに検出して遮断</strong>する新ガードレール。
+          ただし過剰検出のリスクも想定されており、Anthropic は
+          Cyber Verification Program という審査制度を同時に立ち上げた。
+        </div>
+      </div>
+
+      <div class="card card--success reveal">
+        <div class="card__label"><i class="fa-solid fa-user-check"></i> 正当用途の解除</div>
+        <div class="card__title">Cyber Verification Program</div>
+        <div class="card__desc">
+          脆弱性研究、ペネトレーションテスト、レッドチーム運用など
+          正当な用途で使いたいセキュリティ専門家のための審査登録制度。
+          通ると通常ブロックされるカテゴリーの利用が解放される。
+        </div>
+        <div class="card__foot">
+          Help Net Security / Anthropic サポート記事に詳細。
+        </div>
+      </div>
+    </section>
+
+    <!-- Alignment summary -->
+    <section class="section">
+      <h2 class="section__title">アライメント評価</h2>
+      <div class="quote reveal">
+        おおむねよく整合しており信頼に足るが、完璧ではない。
+        <span class="quote__cite">— Claude Opus 4.7 System Card（要約）</span>
+      </div>
+
+      <div class="table-wrap reveal">
+        <table class="table">
+          <thead><tr><th>項目</th><th>4.7 の傾向</th></tr></thead>
+          <tbody>
+            <tr><td>欺瞞</td><td>発生率は低水準</td></tr>
+            <tr><td>sycophancy（おもねり）</td><td>低水準</td></tr>
+            <tr><td>悪用への協力</td><td>低水準</td></tr>
+            <tr><td>プロンプトインジェクション耐性</td><td><strong>4.6 より向上</strong></td></tr>
+            <tr><td>規制薬物の害軽減アドバイス</td><td>Opus 4.6 より若干詳細化（自己開示あり）</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout callout--warn reveal">
+        <div class="callout__icon"><i class="fa-solid fa-circle-info"></i></div>
+        <div>
+          <div class="callout__title">システムカードの率直な自己開示</div>
+          <div class="callout__body">
+            232 ページに及ぶ System Card は、Mythos Preview の訓練で起きた
+            「意図せざる chain-of-thought スーパバイズ」が、
+            Opus 4.7 の訓練でも <strong>約 7.8%</strong> のエピソードに影響したと記載。
+            Hacker News ではこの記述をめぐり「これは実質的に Mythos の縮小版ではないのか」
+            というメタな疑念も提起された。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mythos -->
+    <section class="section">
+      <h2 class="section__title">Claude Mythos / Project Glasswing</h2>
+      <p class="reveal">
+        Mythos は、攻撃再現性を測る CyberGym で <strong>83.1%</strong>
+        （4.6: 66.6%）、SWE-bench Verified で <strong>93.9%</strong> に届く
+        未公開のフラッグシップ。Project Glasswing は、重要ソフトウェアの保護を
+        テーマに掲げる Anthropic の取り組みで、Mythos はその中核となる AI。
+      </p>
+
+      <div class="timeline reveal">
+        <div class="timeline__item">
+          <div class="timeline__dot"></div>
+          <div class="timeline__when">2026-04 初頭</div>
+          <div class="timeline__title">Mythos Preview、一部の選ばれた企業に解放開始</div>
+          <div class="timeline__body">Project Glasswing 内部での限定運用。</div>
+        </div>
+        <div class="timeline__item">
+          <div class="timeline__dot"></div>
+          <div class="timeline__when">2026-04-16</div>
+          <div class="timeline__title">Opus 4.7 を一般公開</div>
+          <div class="timeline__body">
+            Mythos を広く放たない代わりに、セーフガードを実戦投入した
+            「天井を抑えた公開モデル」として 4.7 を投入。
+          </div>
+        </div>
+        <div class="timeline__item">
+          <div class="timeline__dot"></div>
+          <div class="timeline__when">現在</div>
+          <div class="timeline__title">Mythos は限定プレビュー継続</div>
+          <div class="timeline__body">
+            Mashable が取り上げた専門家コメントは PR か実質かで割れているが、
+            4.7 は「Mythos 級モデルを公に出す前の実験台」という役割を担っている点で意見は一致。
+          </div>
+        </div>
+      </div>
+
+      <div class="versus reveal">
+        <div class="versus__side is-winner">
+          <h4>Opus 4.7（公開）</h4>
+          <p style="margin:0;">
+            CyberGym 非公開 / SWE Verified 87.6% / honesty 92%<br>
+            リアルタイム Cyber Safeguards 実装
+          </p>
+        </div>
+        <div class="versus__mid">vs</div>
+        <div class="versus__side">
+          <h4>Mythos（限定）</h4>
+          <p style="margin:0;">
+            CyberGym 83.1% / SWE Verified 93.9% / honesty 95.4%<br>
+            一般非公開
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="pager">
+      <a class="pager__btn" href="benchmarks.html"><small>← PREV</small><strong>ベンチ</strong></a>
+      <a class="pager__btn pager__btn--next" href="channels.html"><small>NEXT →</small><strong>配信チャネル</strong></a>
+    </div>
+  </div>
+</main>
+<div id="drawer-root"></div>
+<nav class="tabbar" id="tabbar"></nav>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script>OPUS47_UI.init("safety", "安全性 & Mythos");</script>
+</body></html>

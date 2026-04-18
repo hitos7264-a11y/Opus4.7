@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="ja" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+<meta name="theme-color" content="#0b0b0e">
+<title>Adaptive Reasoning &amp; xhigh — Claude Opus 4.7 仕様書</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/charts.css">
+<link rel="stylesheet" href="../css/anim.css">
+</head>
+<body>
+<header class="appbar" id="appbar"></header>
+<main class="app-shell">
+  <div class="page">
+    <a class="backlink" href="../index.html"><i class="fa-solid fa-chevron-left"></i> ホームに戻る</a>
+
+    <div class="section__head reveal">
+      <div class="section__kicker">4 / 16 · REASONING</div>
+      <h1 class="section__title">Adaptive Reasoning &amp; xhigh</h1>
+      <p class="section__lead">
+        effort は 5 段階に拡張され、<code>budget_tokens</code> は廃止。
+        Claude Code の既定は全プランで xhigh に昇格。<code>temperature</code> 系は固定化。
+      </p>
+    </div>
+
+    <!-- Effort levels -->
+    <section class="section">
+      <h2 class="section__title">effort の 5 段階</h2>
+      <div class="accordion reveal">
+        <div class="accordion__item">
+          <button class="accordion__head">
+            <span><span class="badge badge--ghost">low</span> &nbsp;軽い質問・短文応答</span>
+            <i class="fa-solid fa-chevron-down chev"></i>
+          </button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            トークン消費を最小化したいとき。FAQ 型チャット、定型分類、単発要約など。
+          </div></div>
+        </div>
+        <div class="accordion__item">
+          <button class="accordion__head">
+            <span><span class="badge badge--ghost">medium</span> &nbsp;標準一問一答 / 分類</span>
+            <i class="fa-solid fa-chevron-down chev"></i>
+          </button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            多くの SaaS 統合・ビジネスフォーム処理での妥当な出発点。
+            レイテンシとコストのバランスが取りやすい。
+          </div></div>
+        </div>
+        <div class="accordion__item">
+          <button class="accordion__head">
+            <span><span class="badge badge--accent">high</span> &nbsp;深い推論と複数ステップ</span>
+            <i class="fa-solid fa-chevron-down chev"></i>
+          </button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            従来の「しっかり考える」層。長文解析、仕様書からの逆算、
+            中規模のコード修正など。
+          </div></div>
+        </div>
+        <div class="accordion__item is-open">
+          <button class="accordion__head">
+            <span><span class="badge badge--brand">xhigh <i class="fa-solid fa-sparkles"></i> NEW</span> &nbsp;長時間エージェント / Claude Code 既定</span>
+            <i class="fa-solid fa-chevron-down chev"></i>
+          </button>
+          <div class="accordion__body" style="max-height:500px;"><div class="accordion__body-inner">
+            high と max の中間。grep、複数ファイル読取、依存追跡などの
+            探索的ツール呼び出しがより積極的に起動する。
+            <strong>30 分以上走るエージェント</strong>運用で high より明らかに道を見失いにくい、
+            と APIYI の実運用ガイドも記している。Claude Code では全プランで既定。
+          </div></div>
+        </div>
+        <div class="accordion__item">
+          <button class="accordion__head">
+            <span><span class="badge badge--ghost">max</span> &nbsp;最深推論・研究用途</span>
+            <i class="fa-solid fa-chevron-down chev"></i>
+          </button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            ボトムライン評価・論文推論・最上位レビュー向け。
+            ただしコスト・レイテンシの負担が最大。
+          </div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Breaking changes -->
+    <section class="section">
+      <h2 class="section__title">Breaking Changes</h2>
+
+      <div class="card card--danger reveal">
+        <div class="card__label"><i class="fa-solid fa-ban"></i> REMOVED</div>
+        <div class="card__title"><code>thinking.budget_tokens</code> が廃止</div>
+        <div class="card__desc">
+          思考の配分は <strong>adaptive thinking</strong> に一本化。
+          effort はその総量を決める唯一のダイヤルとなり、xhigh は
+          「常に深く考える、拡張的な探索を伴う」挙動に固定。
+        </div>
+      </div>
+
+      <div class="card card--danger reveal">
+        <div class="card__label"><i class="fa-solid fa-ban"></i> LOCKED</div>
+        <div class="card__title"><code>temperature</code> / <code>top_p</code> / <code>top_k</code> 固定化</div>
+        <div class="card__desc">
+          既定以外の値を投げると <strong>400 エラー</strong>。
+          サンプリングはモデル側で最適化。<br>
+          従来コードで明示指定していた箇所は事前に削除しておくこと。
+        </div>
+      </div>
+
+      <div class="card card--warning reveal">
+        <div class="card__label"><i class="fa-solid fa-eye-slash"></i> HIDDEN</div>
+        <div class="card__title">思考テキストは既定で非表示</div>
+        <div class="card__desc">
+          <code>display: "summarized"</code> 相当のオプトインをしない限り
+          chain-of-thought テキストは表示されない。
+          ログ基盤・プレイグラウンド UI・デバッグツールの前提を揃える必要がある。
+        </div>
+      </div>
+
+      <div class="quote reveal">
+        Claude Opus 4.7 は今や adaptive reasoning 一択になった。
+        <span class="quote__cite">— Ethan Mollick（LinkedIn）</span>
+      </div>
+    </section>
+
+    <!-- Code sample -->
+    <section class="section">
+      <h2 class="section__title">コードサンプル: 4.6 → 4.7</h2>
+
+      <div class="codeblock reveal">
+        <div class="codeblock__head">
+          <span><span class="dot" style="background:#ff4d4f;"></span>BEFORE (Opus 4.6)</span>
+          <button data-copy>コピー</button>
+        </div>
+<pre><code>client.messages.create({
+  model: "claude-opus-4-6",
+  max_tokens: 4096,
+  temperature: 0.7,      // ← 4.7 ではエラー
+  top_p: 0.9,            // ← 4.7 ではエラー
+  thinking: {
+    type: "enabled",
+    budget_tokens: 8000, // ← 4.7 では廃止
+    display: "full"
+  },
+  messages: [...]
+});</code></pre>
+      </div>
+
+      <div class="codeblock reveal">
+        <div class="codeblock__head">
+          <span><span class="dot" style="background:#2fbf71;"></span>AFTER (Opus 4.7)</span>
+          <button data-copy>コピー</button>
+        </div>
+<pre><code>client.messages.create({
+  model: "claude-opus-4-7",
+  max_tokens: 6144,      // 新トークナイザ分の余裕
+  // temperature / top_p / top_k は触らない
+  thinking: {
+    type: "enabled",
+    effort: "xhigh",     // low / medium / high / xhigh / max
+    display: "summarized"
+  },
+  messages: [...]
+});</code></pre>
+      </div>
+    </section>
+
+    <!-- 自己検証 -->
+    <section class="section">
+      <h2 class="section__title">自己検証する推論</h2>
+      <p class="reveal">
+        Anthropic は 4.7 を「長時間タスクを厳格さと一貫性を持って扱い、指示に精密に従い、
+        <strong>報告する前に自分の成果を検証する方法を自ら編み出す</strong>モデル」と説明する。
+      </p>
+      <p class="reveal">
+        この自己検証はベンチマーク上のハルシネーション率を下げるだけでなく、
+        長時間エージェントが途中で「自分が何をやっていたか」を見失わないための
+        内部スキャフォールディングとしても機能する。結果として、
+        <strong>同じ問題をより少ない出力トークンで解く</strong>傾向も観察されている。
+      </p>
+      <div class="callout callout--ok reveal">
+        <div class="callout__icon"><i class="fa-solid fa-circle-check"></i></div>
+        <div>
+          <div class="callout__title">VentureBeat の表現</div>
+          <div class="callout__body">
+            「Opus 4.7 は<strong>自分の出力を自分で検証する最初の汎用モデル</strong>」
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="pager">
+      <a class="pager__btn" href="context.html"><small>← PREV</small><strong>コンテキスト</strong></a>
+      <a class="pager__btn pager__btn--next" href="vision.html"><small>NEXT →</small><strong>ビジョン</strong></a>
+    </div>
+  </div>
+</main>
+<div id="drawer-root"></div>
+<nav class="tabbar" id="tabbar"></nav>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script>OPUS47_UI.init("reasoning", "Adaptive Reasoning");</script>
+</body></html>

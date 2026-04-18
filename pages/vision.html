@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ja" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+<meta name="theme-color" content="#0b0b0e">
+<title>ビジョン — Claude Opus 4.7 仕様書</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/charts.css">
+<link rel="stylesheet" href="../css/anim.css">
+</head>
+<body>
+<header class="appbar" id="appbar"></header>
+<main class="app-shell">
+  <div class="page">
+    <a class="backlink" href="../index.html"><i class="fa-solid fa-chevron-left"></i> ホームに戻る</a>
+
+    <div class="section__head reveal">
+      <div class="section__kicker">5 / 16 · VISION</div>
+      <h1 class="section__title">マルチモーダル（ビジョン）</h1>
+      <p class="section__lead">
+        今回のアップデートで最も派手な変化。解像度は約 3 倍、XBOW は +44pt、
+        座標ベースの UI 自動化が実用域に入った。
+      </p>
+    </div>
+
+    <!-- 主要数値 -->
+    <section class="section">
+      <div class="grid grid--2 stagger">
+        <div class="stat">
+          <span class="stat__label">受入れ長辺</span>
+          <span class="stat__value">2,576<small style="font-size:12px;">px</small></span>
+          <span class="stat__delta is-up">4.6 比 +1,008px</span>
+        </div>
+        <div class="stat">
+          <span class="stat__label">最大画素数</span>
+          <span class="stat__value">3.75<small style="font-size:12px;">MP</small></span>
+          <span class="stat__delta is-up">約 3.25 倍</span>
+        </div>
+        <div class="stat">
+          <span class="stat__label">XBOW</span>
+          <span class="stat__value">98.5%</span>
+          <span class="stat__delta is-up">+44.0pt</span>
+        </div>
+        <div class="stat">
+          <span class="stat__label">社内 coding 93</span>
+          <span class="stat__value">+13<small style="font-size:12px;">pt</small></span>
+          <span class="stat__delta is-up">視覚寄与単独</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 棒グラフ -->
+    <section class="section">
+      <h2 class="section__title">解像度の比較</h2>
+      <div class="barchart reveal">
+        <div class="barchart__row">
+          <span class="barchart__label">Opus 4.6 長辺</span>
+          <div class="barchart__track"><div class="barchart__fill barchart__fill--gray" data-fill="60.9"></div></div>
+          <span class="barchart__value">1,568</span>
+        </div>
+        <div class="barchart__row">
+          <span class="barchart__label">Opus 4.7 長辺</span>
+          <div class="barchart__track"><div class="barchart__fill" data-fill="100"></div></div>
+          <span class="barchart__value">2,576</span>
+        </div>
+        <div class="barchart__row">
+          <span class="barchart__label">Opus 4.6 画素</span>
+          <div class="barchart__track"><div class="barchart__fill barchart__fill--gray" data-fill="30.7"></div></div>
+          <span class="barchart__value">1.15MP</span>
+        </div>
+        <div class="barchart__row">
+          <span class="barchart__label">Opus 4.7 画素</span>
+          <div class="barchart__track"><div class="barchart__fill" data-fill="100"></div></div>
+          <span class="barchart__value">3.75MP</span>
+        </div>
+      </div>
+      <div class="legend">
+        <span class="legend__item"><span class="legend__sw legend__sw--brand"></span>Opus 4.7</span>
+        <span class="legend__item"><span class="legend__sw legend__sw--gray"></span>Opus 4.6</span>
+      </div>
+    </section>
+
+    <!-- XBOW -->
+    <section class="section">
+      <h2 class="section__title">XBOW（社内視覚精度ベンチ）</h2>
+      <p class="reveal">小さな文字や細密図形の読取り課題。4.6 では半分しか取れなかったものが、4.7 ではほぼ完全解に近づいた。</p>
+      <div class="barchart reveal">
+        <div class="barchart__row">
+          <span class="barchart__label">Opus 4.6</span>
+          <div class="barchart__track"><div class="barchart__fill barchart__fill--gray" data-fill="54.5"></div></div>
+          <span class="barchart__value">54.5%</span>
+        </div>
+        <div class="barchart__row">
+          <span class="barchart__label">Opus 4.7</span>
+          <div class="barchart__track"><div class="barchart__fill" data-fill="98.5"></div></div>
+          <span class="barchart__value">98.5%</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ユースケース -->
+    <section class="section">
+      <h2 class="section__title">新しく実用域になったユースケース</h2>
+
+      <div class="card reveal">
+        <div class="card__label"><i class="fa-solid fa-desktop"></i> UI 自動化</div>
+        <div class="card__title">座標ベースのコンピュータ操作エージェント</div>
+        <div class="card__desc">
+          スクリーンショットから 1:1 のピクセル座標対応が可能になり、
+          ボタン位置の誤認が減少。Caylent は「UI の座標ベース自動化ワークフローが
+          初めて実用域に入った」と評価。
+        </div>
+      </div>
+
+      <div class="card reveal">
+        <div class="card__label"><i class="fa-solid fa-chart-line"></i> ダッシュボード抽出</div>
+        <div class="card__title">複雑なダッシュボード/チャートからの構造化抽出</div>
+        <div class="card__desc">
+          小さな目盛り、脚注、凡例などまで読めるため、ダッシュボードを 1 枚読ませるだけで
+          意味のあるテーブルが返るようになった。
+        </div>
+      </div>
+
+      <div class="card reveal">
+        <div class="card__label"><i class="fa-solid fa-diagram-project"></i> 図版解釈</div>
+        <div class="card__title">Diagram Interpretation</div>
+        <div class="card__desc">
+          PDF の図版や回路図、UML、フローチャートから矢印の向きと分岐条件を正確に読み取るタスクが、
+          視覚解像度の向上だけで体感的に成功率が上がる。
+        </div>
+      </div>
+
+      <div class="card reveal">
+        <div class="card__label"><i class="fa-solid fa-magnifying-glass"></i> QA / 検品</div>
+        <div class="card__title">画像をもとにした品質検証</div>
+        <div class="card__desc">
+          生成・レイアウト成果物のスクショを読み返させて「不足項目」「はみ出し」「誤植」を
+          拾わせる用途で、自己検証能力と組み合わさって効果が高い。
+        </div>
+      </div>
+    </section>
+
+    <!-- 注意 -->
+    <section class="section">
+      <div class="callout callout--info reveal">
+        <div class="callout__icon"><i class="fa-solid fa-info-circle"></i></div>
+        <div>
+          <div class="callout__title">高解像度は自動適用、必要ないなら縮小を</div>
+          <div class="callout__body">
+            画像はモデル側で自動的に高解像度処理されるため、細部が不要な用途では
+            ユーザー側で <strong>ダウンサンプリング</strong> することで
+            トークン消費を抑えられる。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="pager">
+      <a class="pager__btn" href="reasoning.html"><small>← PREV</small><strong>Reasoning</strong></a>
+      <a class="pager__btn pager__btn--next" href="benchmarks.html"><small>NEXT →</small><strong>ベンチマーク</strong></a>
+    </div>
+  </div>
+</main>
+<div id="drawer-root"></div>
+<nav class="tabbar" id="tabbar"></nav>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script>OPUS47_UI.init("vision", "ビジョン");</script>
+</body></html>

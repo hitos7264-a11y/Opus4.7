@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="ja" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+<meta name="theme-color" content="#0b0b0e">
+<title>移行ガイド — Claude Opus 4.7 仕様書</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/charts.css">
+<link rel="stylesheet" href="../css/anim.css">
+</head>
+<body>
+<header class="appbar" id="appbar"></header>
+<main class="app-shell">
+  <div class="page">
+    <a class="backlink" href="../index.html"><i class="fa-solid fa-chevron-left"></i> ホームに戻る</a>
+
+    <div class="section__head reveal">
+      <div class="section__kicker">9 / 16 · MIGRATION</div>
+      <h1 class="section__title">移行ガイド</h1>
+      <p class="section__lead">
+        Caylent の移行ガイドをベースに、本仕様書で独自に再編した 10 ステップ。
+        「同じコードで 4.6 を 4.7 に差し替えただけでは通らない」前提で順に潰す。
+      </p>
+    </div>
+
+    <section class="section">
+      <div class="timeline reveal">
+
+        <div class="timeline__item">
+          <div class="timeline__dot"></div>
+          <div class="timeline__when">Step 01</div>
+          <div class="timeline__title">サンプリングパラメータ削除</div>
+          <div class="timeline__body">
+            <code>temperature</code> / <code>top_p</code> / <code>top_k</code> の非デフォルト値を
+            コードベース全体から消す。残したままだと 400 エラー。
+          </div>
+        </div>
+
+        <div class="timeline__item">
+          <div class="timeline__dot"></div>
+          <div class="timeline__when">Step 02</div>
+          <div class="timeline__title"><code>budget_tokens</code> 廃止 → adaptive thinking へ</div>
+          <div class="timeline__body">
+            effort は <code>medium</code> から始めて、ユースケースに応じて
+            <code>high</code> / <code>xhigh</code> に昇格。Claude Code 系は xhigh が既定。
+          </div>
+        </div>
+
+        <div class="timeline__item">
+          <div class="timeline__dot"></div>
+          <div class="timeline__when">Step 03</div>
+          <div class="timeline__title">思考表示方針の決定</div>
+          <div class="timeline__body">
+            <code>display: "summarized"</code> オプトインの要否を、ログ基盤・UI・監査要件と
+            合わせて判断。「思考が勝手に消えた」ように見える現場事故を先に防ぐ。
+          </div>
+        </div>
+
+        <div class="timeline__item">
+          <div class="timeline__dot"></div>
+          <div class="timeline__when">Step 04</div>
+          <div class="timeline__title">新トークナイザ向けヘッドルーム再計算</div>
+          <div class="timeline__body">
+            1.17〜1.35× のインフレを見込んで <code>max_tokens</code> と compaction 閾値を
+            再ベースライン化。<code>count_tokens</code> の見積もり結果は 4.6 と一致しない。
+          </div>
+        </div>
+
+        <div class="timeline__item">
+          <div class="timeline__dot"></div>
+          <div class="timeline__when">Step 05</div>
+          <div class="timeline__title">プロンプトの再チューニング</div>
+          <div class="timeline__body">
+            「気配り」前提の書き方は通らない。要件・受け入れ基準・禁止事項を
+            <strong>明示的に書き下す</strong>。曖昧さが残るほど出力はフラットになる。
+          </div>
+        </div>
+
+        <div class="timeline__item">
+          <div class="timeline__dot"></div>
+          <div class="timeline__when">Step 06</div>
+          <div class="timeline__title">破壊的操作に確認ゲートを追加</div>
+          <div class="timeline__body">
+            force-push、<code>rm -rf</code>、prod テーブルの DROP などは
+            必ず確認ステップを挟む。4.7 はツール呼び出しを減らす傾向があるが、
+            一度走ったときの自律性は高い。
+          </div>
+        </div>
+
+        <div class="timeline__item">
+          <div class="timeline__dot"></div>
+          <div class="timeline__when">Step 07</div>
+          <div class="timeline__title">長 ctx retrieval の用途別再検証</div>
+          <div class="timeline__body">
+            524k+ 帯の想起は <strong>78.3% → 32.2%</strong>。
+            RAG / chunking 戦略、階層検索、要約圧縮を再設計。
+          </div>
+        </div>
+
+        <div class="timeline__item">
+          <div class="timeline__dot"></div>
+          <div class="timeline__when">Step 08</div>
+          <div class="timeline__title">コスト計測ハーネスの再ベースライン</div>
+          <div class="timeline__body">
+            請求額の A/B を 1〜2 週間取り、実請求と予算の乖離を掴む。
+            Finout / FinOps ダッシュボードを用意している組織は閾値を 4.7 向けに更新。
+          </div>
+        </div>
+
+        <div class="timeline__item">
+          <div class="timeline__dot"></div>
+          <div class="timeline__when">Step 09</div>
+          <div class="timeline__title">アーキテクチャの二層化</div>
+          <div class="timeline__body">
+            Opus 4.7 はプランナー / レビュワー / アナリスト。
+            下流のサブエージェントは Haiku / Sonnet 系など、安価で高速なティアに委譲。
+          </div>
+        </div>
+
+        <div class="timeline__item">
+          <div class="timeline__dot"></div>
+          <div class="timeline__when">Step 10</div>
+          <div class="timeline__title">Cyber Verification Program 申請（該当者のみ）</div>
+          <div class="timeline__body">
+            脆弱性研究・ペネトレ・レッドチーム用途は審査を通してブロック解除。
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Migration diff -->
+    <section class="section">
+      <h2 class="section__title">Before / After diff（YAML）</h2>
+
+      <div class="codeblock reveal">
+        <div class="codeblock__head">
+          <span><span class="dot" style="background:#ff4d4f;"></span>config.4.6.yaml</span>
+        </div>
+<pre><code>model: claude-opus-4-6
+max_tokens: 4096
+temperature: 0.7
+top_p: 0.9
+thinking:
+  budget_tokens: 8000
+  display: full</code></pre>
+      </div>
+
+      <div class="codeblock reveal">
+        <div class="codeblock__head">
+          <span><span class="dot" style="background:#2fbf71;"></span>config.4.7.yaml</span>
+        </div>
+<pre><code>model: claude-opus-4-7
+max_tokens: 6144   # tokenizer 膨張を見込む
+# temperature / top_p / top_k は書かない
+thinking:
+  effort: xhigh    # low / medium / high / xhigh / max
+  display: summarized
+safeguards:
+  cyber_verification: false   # 必要者のみ申請で true に</code></pre>
+      </div>
+    </section>
+
+    <!-- Risks -->
+    <section class="section">
+      <h2 class="section__title">移行時に「静かに壊れる」ポイント</h2>
+      <div class="accordion reveal">
+        <div class="accordion__item">
+          <button class="accordion__head"><span>コスト監視ダッシュボードの閾値</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            トークナイザ膨張でしきい値を超えやすくなるため、アラートが誤発火または抑止されがち。
+          </div></div>
+        </div>
+        <div class="accordion__item">
+          <button class="accordion__head"><span>長文要約の「覚えている前提」</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            長 ctx retrieval の退行で、過去の議事録・契約書・仕様書の参照精度が下がる。
+          </div></div>
+        </div>
+        <div class="accordion__item">
+          <button class="accordion__head"><span>思考テキストを前提にしたログ解析</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            既定で CoT は非表示。監査/デバッグ用途は summarized を明示的に有効化。
+          </div></div>
+        </div>
+        <div class="accordion__item">
+          <button class="accordion__head"><span>プロンプトの「行間を読む」前提</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            4.6 時代の「良きにはからって」系プロンプトは、出力がフラットで地味になるケースあり。
+          </div></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="pager">
+      <a class="pager__btn" href="channels.html"><small>← PREV</small><strong>配信</strong></a>
+      <a class="pager__btn pager__btn--next" href="personality.html"><small>NEXT →</small><strong>性格 &amp; 挙動</strong></a>
+    </div>
+  </div>
+</main>
+<div id="drawer-root"></div>
+<nav class="tabbar" id="tabbar"></nav>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script>OPUS47_UI.init("migration", "移行ガイド");</script>
+</body></html>

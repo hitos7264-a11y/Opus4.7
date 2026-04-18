@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="ja" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+<meta name="theme-color" content="#0b0b0e">
+<title>性格 &amp; 挙動 — Claude Opus 4.7 仕様書</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/charts.css">
+<link rel="stylesheet" href="../css/anim.css">
+</head>
+<body>
+<header class="appbar" id="appbar"></header>
+<main class="app-shell">
+  <div class="page">
+    <a class="backlink" href="../index.html"><i class="fa-solid fa-chevron-left"></i> ホームに戻る</a>
+
+    <div class="section__head reveal">
+      <div class="section__kicker">10 / 16 · PERSONALITY</div>
+      <h1 class="section__title">性格 &amp; 挙動の変化</h1>
+      <p class="section__lead">
+        Karo Zieminski らのレビューに象徴的に表れた 4.7 の性格。
+        「行間を読まない」方向に振れた結果、賛否が明確に分かれる。
+      </p>
+    </div>
+
+    <!-- Side by side -->
+    <section class="section">
+      <h2 class="section__title">Before → After</h2>
+
+      <div class="versus reveal">
+        <div class="versus__side">
+          <h4>4.6（行間を読む）</h4>
+          <p style="margin:0;font-size:12px;">
+            曖昧な指示でも「たぶんこれが欲しい」と推測して補正してくれる。
+          </p>
+        </div>
+        <div class="versus__mid">→</div>
+        <div class="versus__side is-winner">
+          <h4>4.7（文字通り読む）</h4>
+          <p style="margin:0;font-size:12px;">
+            書かれていないことは基本やらない。明示的なほど精密に従う。
+          </p>
+        </div>
+      </div>
+
+      <div class="versus reveal">
+        <div class="versus__side">
+          <h4>4.6 のツール呼び出し</h4>
+          <p style="margin:0;font-size:12px;">積極的に外部ツール・サブエージェント起動</p>
+        </div>
+        <div class="versus__mid">→</div>
+        <div class="versus__side is-winner">
+          <h4>4.7 のツール呼び出し</h4>
+          <p style="margin:0;font-size:12px;">自前で完結させようとする頻度が増加</p>
+        </div>
+      </div>
+
+      <div class="versus reveal">
+        <div class="versus__side">
+          <h4>4.6 の自己検証</h4>
+          <p style="margin:0;font-size:12px;">推論のみ、検証は明示指示が必要</p>
+        </div>
+        <div class="versus__mid">→</div>
+        <div class="versus__side is-winner">
+          <h4>4.7 の自己検証</h4>
+          <p style="margin:0;font-size:12px;">報告前に自分の成果を検証する方法を自ら編み出す</p>
+        </div>
+      </div>
+
+      <div class="versus reveal">
+        <div class="versus__side">
+          <h4>4.6 の長期記憶</h4>
+          <p style="margin:0;font-size:12px;">セッション内中心、ノート活用は明示指示</p>
+        </div>
+        <div class="versus__mid">→</div>
+        <div class="versus__side is-winner">
+          <h4>4.7 の長期記憶</h4>
+          <p style="margin:0;font-size:12px;">.md ノートの保存・再読解を自発的に行う</p>
+        </div>
+      </div>
+
+      <div class="versus reveal">
+        <div class="versus__side">
+          <h4>4.6 の Office 文書</h4>
+          <p style="margin:0;font-size:12px;">レイアウト崩れを出しがち</p>
+        </div>
+        <div class="versus__mid">→</div>
+        <div class="versus__side is-winner">
+          <h4>4.7 の Office 文書</h4>
+          <p style="margin:0;font-size:12px;">.docx 赤入れ / .pptx レイアウト自己点検が実用域</p>
+        </div>
+      </div>
+
+      <div class="versus reveal">
+        <div class="versus__side">
+          <h4>4.6 の出力冗長性</h4>
+          <p style="margin:0;font-size:12px;">問題あたり多めのトークン</p>
+        </div>
+        <div class="versus__mid">→</div>
+        <div class="versus__side is-winner">
+          <h4>4.7 の出力冗長性</h4>
+          <p style="margin:0;font-size:12px;">全 effort で同問題を少ないトークンで解く傾向</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 二分する評価 -->
+    <section class="section">
+      <h2 class="section__title">評価は二分する</h2>
+
+      <div class="grid grid--2 stagger">
+        <div class="card card--success">
+          <div class="card__label"><i class="fa-solid fa-thumbs-up"></i> 歓迎派</div>
+          <div class="card__title">制御可能性の向上</div>
+          <div class="card__desc" style="font-size:13px;">
+            指示どおりに動くため、仕様化されたワークフローで安定する。
+            自己検証と合わせて、長時間エージェントの迷走が減る。
+          </div>
+        </div>
+        <div class="card card--danger">
+          <div class="card__label"><i class="fa-solid fa-thumbs-down"></i> 批判派</div>
+          <div class="card__title">退化したように見える</div>
+          <div class="card__desc" style="font-size:13px;">
+            同じプロンプトで出力がフラット。Medium の "Opus 4.7 Is The Worst Release" 記事や
+            r/ClaudeAI の回帰報告はここに起因するものが多い。
+          </div>
+        </div>
+      </div>
+
+      <div class="quote reveal">
+        4.7 は「行間を読まない」方向に振られている。<br>
+        4.6 が「ユーザーが本当に欲しているのはたぶんこれだろう」と推測して補正していた部分を、
+        4.7 は書かれていない以上やらない。
+        <span class="quote__cite">— Karo Zieminski（Substack）</span>
+      </div>
+    </section>
+
+    <!-- プロンプト方針 -->
+    <section class="section">
+      <h2 class="section__title">4.7 向けのプロンプト方針</h2>
+      <ul class="reveal" style="font-size:var(--fs-14); line-height:var(--lh-loose);">
+        <li>ゴール・制約・禁止事項を3点セットで明示する</li>
+        <li>入力形式と出力形式を契約として書く（JSON スキーマ、サンプル入出力）</li>
+        <li>曖昧さは「未確定」と明記させ、仮定を晒させる</li>
+        <li>長期タスクは .md ノートでの自発的スキャフォールディングを明示的に許可する</li>
+        <li>危険操作は「事前承認を求める」ことを指示に含める</li>
+      </ul>
+    </section>
+
+    <div class="pager">
+      <a class="pager__btn" href="migration.html"><small>← PREV</small><strong>移行ガイド</strong></a>
+      <a class="pager__btn pager__btn--next" href="versus.html"><small>NEXT →</small><strong>競合比較</strong></a>
+    </div>
+  </div>
+</main>
+<div id="drawer-root"></div>
+<nav class="tabbar" id="tabbar"></nav>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script>OPUS47_UI.init("personality", "性格 & 挙動");</script>
+</body></html>

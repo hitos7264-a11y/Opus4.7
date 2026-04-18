@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ja" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+<meta name="theme-color" content="#0b0b0e">
+<title>最終評価 — Claude Opus 4.7 仕様書</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/charts.css">
+<link rel="stylesheet" href="../css/anim.css">
+</head>
+<body>
+<header class="appbar" id="appbar"></header>
+<main class="app-shell">
+  <div class="page">
+    <a class="backlink" href="../index.html"><i class="fa-solid fa-chevron-left"></i> ホームに戻る</a>
+
+    <div class="section__head reveal">
+      <div class="section__kicker">12 / 16 · VERDICT</div>
+      <h1 class="section__title">最終評価</h1>
+      <p class="section__lead">
+        スペックと挙動を総ざらいしたうえで、4.7 が Claude の進化図のどこに座っているか。
+      </p>
+    </div>
+
+    <!-- Overall verdict -->
+    <section class="section">
+      <div class="card card--gradient reveal">
+        <div class="card__label"><i class="fa-solid fa-gavel"></i> BOTTOM LINE</div>
+        <div class="card__title">「安全に本番投入できるもっとも強いモデル」</div>
+        <div class="card__desc">
+          4.7 は「最強の値」を打ち出す競争ではなく、
+          <strong>「安全に本番投入できるもっとも強いモデルはどれか」</strong>
+          という新しい次元の競争に Anthropic が移行したことの象徴。
+          値札が変わらない代わりに内部トークナイザが静かに変わり、
+          思考配分がユーザーの手から取り上げられて自動化され、
+          視覚解像度だけが派手に 3 倍になり、1M tokens の retrieval スコアが下がる代わりに
+          誠実性が上がり、GitHub や Snowflake や Bedrock のエンタープライズ文脈へ同日で横展開された。
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick decision -->
+    <section class="section">
+      <h2 class="section__title">短く答えると</h2>
+      <div class="quote reveal">
+        最高値のロマンを期待するなら Mythos を待つべきだが、<br>
+        <strong>最強の一般公開モデルで今日から本番系を動かすなら Opus 4.7 一択</strong>。
+      </div>
+    </section>
+
+    <!-- Pros / cons -->
+    <section class="section">
+      <h2 class="section__title">Pros / Cons サマリ</h2>
+      <div class="grid grid--2 stagger">
+        <div class="card card--success">
+          <div class="card__label">PROS</div>
+          <div class="card__title">強み</div>
+          <div class="card__desc" style="font-size:13px;">
+            <ul style="margin:8px 0 0 18px;">
+              <li>コーディング・エージェント系で全面的に進化</li>
+              <li>視覚解像度 約 3 倍、XBOW 98.5%</li>
+              <li>honesty rate 92%（公開最高）</li>
+              <li>自己検証する推論</li>
+              <li>Bedrock / Vertex / Foundry / Cortex / Copilot に同日配信</li>
+              <li>Cyber Safeguards + Cyber Verification Program</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card card--danger">
+          <div class="card__label">CONS</div>
+          <div class="card__title">弱み</div>
+          <div class="card__desc" style="font-size:13px;">
+            <ul style="margin:8px 0 0 18px;">
+              <li>長 ctx retrieval の退行（91.9% → 59.2%）</li>
+              <li>新トークナイザで実請求 +17〜35%</li>
+              <li>BrowseComp / Terminal-Bench では GPT-5.4 が優勢</li>
+              <li>Thematic Generalization は逆に下がる</li>
+              <li><code>temperature</code>/<code>budget_tokens</code> の廃止は Breaking</li>
+              <li>出力がフラットに感じる場面がある</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Use cases -->
+    <section class="section">
+      <h2 class="section__title">こういう用途に向く / 向かない</h2>
+      <div class="table-wrap reveal">
+        <table class="table">
+          <thead>
+            <tr><th>用途</th><th>推奨度</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>長時間走るコーディングエージェント</td><td><span class="badge badge--ok">◎ 最適</span></td></tr>
+            <tr><td>Office 文書オーケストレーション</td><td><span class="badge badge--ok">◎ 向く</span></td></tr>
+            <tr><td>スクリーンショット読取り UI 自動化</td><td><span class="badge badge--ok">◎ 向く</span></td></tr>
+            <tr><td>ダッシュボードからの構造化抽出</td><td><span class="badge badge--ok">◎ 向く</span></td></tr>
+            <tr><td>知識労働プランナー・レビュワー</td><td><span class="badge badge--ok">◎ 向く</span></td></tr>
+            <tr><td>単純抽出・分類・整形</td><td><span class="badge badge--warn">△ 軽量モデル委譲推奨</span></td></tr>
+            <tr><td>524k+ 長 ctx retrieval に依存する系</td><td><span class="badge badge--warn">△ 設計見直し</span></td></tr>
+            <tr><td>ウェブリサーチ主体の QA</td><td><span class="badge badge--warn">△ GPT-5.4 検討</span></td></tr>
+            <tr><td>純粋なターミナルコーディング</td><td><span class="badge badge--warn">△ GPT-5.4 検討</span></td></tr>
+            <tr><td>Mythos 級の最上位能力が必要</td><td><span class="badge badge--danger">× Mythos 待ち</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Meaning -->
+    <section class="section">
+      <h2 class="section__title">マーケティング重心の転換</h2>
+      <p class="reveal">
+        2026 年 4 月の Opus 4.7 リリースは、AI モデルのマーケティングが
+        <strong>「ベンチマークの点数」から「運用可能な安全性と統合性」へと重心を動かしている</strong>
+        ことを非常に象徴的に示している。Anthropic は最強の数字を出す代わりに、
+        Mythos という「より強力な武器」をあえて温存し、その一部を鈍らせた公開モデルで
+        エコシステムを広げている。
+      </p>
+      <p class="reveal">
+        この読み替えを受け入れるか拒むかが、各チームにとっての最初の判断材料になる、
+        というのが 2026 年 4 月 18 日時点の <strong>Claude Opus 4.7 をめぐる
+        最も正確な姿</strong>だと考えてよいだろう。
+      </p>
+    </section>
+
+    <div class="pager">
+      <a class="pager__btn" href="versus.html"><small>← PREV</small><strong>競合比較</strong></a>
+      <a class="pager__btn pager__btn--next" href="faq.html"><small>NEXT →</small><strong>FAQ</strong></a>
+    </div>
+  </div>
+</main>
+<div id="drawer-root"></div>
+<nav class="tabbar" id="tabbar"></nav>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script>OPUS47_UI.init("verdict", "最終評価");</script>
+</body></html>

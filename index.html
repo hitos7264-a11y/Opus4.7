@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="ja" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+<meta name="theme-color" content="#0b0b0e">
+<meta name="description" content="Claude Opus 4.7（2026年4月16日公開）の仕様・ベンチ・安全性・移行ガイドをまとめた、スマホ特化の技術仕様書。2026年4月18日時点の情報。">
+<title>Claude Code 仕様書 2026年4月18日 — Claude Opus 4.7</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/charts.css">
+<link rel="stylesheet" href="css/anim.css">
+</head>
+<body>
+
+<header class="appbar" id="appbar"></header>
+
+<main class="app-shell">
+
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <section class="hero reveal">
+    <span class="hero__eyebrow">
+      <span class="pulse"></span>
+      2026-04-18 現在 / Opus 4 系列
+    </span>
+    <h1 class="hero__title">
+      Claude <span class="accent">Opus&nbsp;4.7</span><br>
+      仕様書<span class="caret"></span>
+    </h1>
+    <p class="hero__subtitle">
+      Anthropic が米時間 <strong>2026&thinsp;年&thinsp;4&thinsp;月&thinsp;16&thinsp;日</strong>に一般公開した
+      フラッグシップ Claude。ベンチ・価格・コンテキスト・推論・視覚・安全性・移行・出典までを、
+      スマホ一台で読み切れる粒度で一本にまとめた仕様書。
+    </p>
+    <div class="hero__meta">
+      <span class="badge badge--brand"><i class="fa-solid fa-bolt"></i> claude-opus-4-7</span>
+      <span class="badge badge--accent"><i class="fa-solid fa-code-branch"></i> vs Opus 4.6</span>
+      <span class="badge badge--ghost"><i class="fa-solid fa-file-lines"></i> 232p System Card</span>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ONE-MINUTE SUMMARY
+       ============================================================ -->
+  <section class="section">
+    <div class="section__head">
+      <div class="section__kicker">One-minute Summary</div>
+      <h2 class="section__title">1 分で読む Opus 4.7</h2>
+      <p class="section__lead">
+        世代交代というより「Opus 4 系列の最終チューンアップ」。値札は据え置きだが、
+        トークナイザ・推論パラメータ・思考表示の既定値が静かに変わり、
+        視覚解像度は約 3 倍に拡大。長コンテキスト retrieval は退行。
+      </p>
+    </div>
+
+    <div class="grid grid--2 stagger">
+      <div class="stat">
+        <span class="stat__label">入力コンテキスト</span>
+        <span class="stat__value">1M</span>
+        <span class="stat__delta is-flat"><i class="fa-solid fa-equals"></i> 4.6 と同一</span>
+      </div>
+      <div class="stat">
+        <span class="stat__label">最大出力</span>
+        <span class="stat__value">128k</span>
+        <span class="stat__delta is-flat"><i class="fa-solid fa-equals"></i> 4.6 と同一</span>
+      </div>
+      <div class="stat">
+        <span class="stat__label">SWE-bench Verified</span>
+        <span class="stat__value">87.6%</span>
+        <span class="stat__delta is-up"><i class="fa-solid fa-arrow-trend-up"></i> +6.8pt</span>
+      </div>
+      <div class="stat">
+        <span class="stat__label">XBOW 視覚精度</span>
+        <span class="stat__value">98.5%</span>
+        <span class="stat__delta is-up"><i class="fa-solid fa-arrow-trend-up"></i> +44.0pt</span>
+      </div>
+      <div class="stat">
+        <span class="stat__label">長ctx retrieval</span>
+        <span class="stat__value">59.2%</span>
+        <span class="stat__delta is-down"><i class="fa-solid fa-arrow-trend-down"></i> −32.7pt</span>
+      </div>
+      <div class="stat">
+        <span class="stat__label">honesty rate</span>
+        <span class="stat__value">92%</span>
+        <span class="stat__delta is-up"><i class="fa-solid fa-arrow-trend-up"></i> 一般公開最高</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PRICING SNAPSHOT
+       ============================================================ -->
+  <section class="section">
+    <div class="section__head">
+      <div class="section__kicker">Pricing Snapshot</div>
+      <h2 class="section__title">価格はそのまま、請求は静かに膨らむ</h2>
+    </div>
+    <div class="pricebar reveal">
+      <div class="pricebar__row">
+        <span class="pricebar__k">入力トークン</span>
+        <span class="pricebar__v">$5.00 <small>/1M tok</small></span>
+      </div>
+      <div class="pricebar__row">
+        <span class="pricebar__k">出力トークン</span>
+        <span class="pricebar__v">$25.00 <small>/1M tok</small></span>
+      </div>
+      <div class="pricebar__row">
+        <span class="pricebar__k">プロンプトキャッシュ（最大）</span>
+        <span class="pricebar__v">−90% <small>入力</small></span>
+      </div>
+      <div class="pricebar__row">
+        <span class="pricebar__k">バッチ処理</span>
+        <span class="pricebar__v">−50%</span>
+      </div>
+      <div class="pricebar__row">
+        <span class="pricebar__k">GitHub Copilot プレミアム</span>
+        <span class="pricebar__v">7.5× <small>〜4/30 プロモ</small></span>
+      </div>
+      <div class="pricebar__row">
+        <span class="pricebar__k">新トークナイザ膨張</span>
+        <span class="pricebar__v">1.00–1.35× <small>typ. 1.17×</small></span>
+      </div>
+    </div>
+    <div class="callout callout--warn reveal">
+      <div class="callout__icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+      <div>
+        <div class="callout__title">Drop-in 置換は危険</div>
+        <div class="callout__body">
+          「同じ価格表の裏で請求が膨らむ」のが Opus 4.7 の経済的実像。
+          <code>count_tokens</code> 見積もり、<code>max_tokens</code> ヘッドルーム、compaction 閾値の
+          再ベースライン化を <strong>必ず</strong> 行うこと。
+        </div>
+      </div>
+    </div>
+    <a class="btn btn--brand btn--block reveal" href="pages/pricing.html">
+      価格 &amp; FinOps の詳細を読む <i class="fa-solid fa-arrow-right"></i>
+    </a>
+  </section>
+
+  <!-- ============================================================
+       WHAT'S NEW CARDS
+       ============================================================ -->
+  <section class="section">
+    <div class="section__head">
+      <div class="section__kicker">What's New</div>
+      <h2 class="section__title">4.6 → 4.7 の主要な変化</h2>
+    </div>
+
+    <a class="card card--gradient reveal" href="pages/vision.html">
+      <div class="card__label"><i class="fa-solid fa-eye"></i> VISION</div>
+      <div class="card__title">視覚解像度が約 3 倍に</div>
+      <div class="card__desc">
+        長辺 1,568px → <strong>2,576px</strong>、画素数で <strong>3.25 倍</strong>。
+        XBOW では 54.5% → 98.5% に跳ね上がり、スクリーンショット読取りや座標ベース自動化が実用域に。
+      </div>
+      <div class="card__foot">→ ビジョン詳細へ</div>
+    </a>
+
+    <a class="card card--gradient reveal" href="pages/reasoning.html">
+      <div class="card__label"><i class="fa-solid fa-brain"></i> REASONING</div>
+      <div class="card__title">xhigh 追加 / Adaptive 一本化</div>
+      <div class="card__desc">
+        effort に <strong>xhigh</strong> が新設され、Claude Code の既定が全プランで昇格。
+        一方で <code>thinking.budget_tokens</code> は廃止、<code>temperature</code> 系も固定化。
+      </div>
+      <div class="card__foot">→ 推論の設計を読む</div>
+    </a>
+
+    <a class="card card--danger reveal" href="pages/context.html">
+      <div class="card__label"><i class="fa-solid fa-align-left"></i> CONTEXT</div>
+      <div class="card__title">長ctx retrieval は退行</div>
+      <div class="card__desc">
+        総合 91.9% → <strong>59.2%</strong>。524k〜1024k tokens 帯では 78.3% → <strong>32.2%</strong>。
+        1M window を額面通りに使うのは危険。Anthropic は「以前の評価が甘かった」と説明。
+      </div>
+      <div class="card__foot">→ コンテキスト詳細へ</div>
+    </a>
+
+    <a class="card card--success reveal" href="pages/safety.html">
+      <div class="card__label"><i class="fa-solid fa-shield-halved"></i> SAFETY</div>
+      <div class="card__title">リアルタイム Cyber Safeguards</div>
+      <div class="card__desc">
+        サイバー高リスク用途の検出・遮断を自動化。正当な用途向けには
+        <strong>Cyber Verification Program</strong> を同時立上げ。<br>
+        honesty rate は <strong>92%</strong>（Mythos 95.4%）。
+      </div>
+      <div class="card__foot">→ 安全性 &amp; Mythos を読む</div>
+    </a>
+
+    <a class="card card--info reveal" href="pages/channels.html">
+      <div class="card__label"><i class="fa-solid fa-cloud"></i> CHANNELS</div>
+      <div class="card__title">Bedrock / Vertex / Foundry / Cortex / Copilot に同日</div>
+      <div class="card__desc">
+        過去最大級の横展開。Bedrock は次世代推論エンジンへ基盤刷新＋ゼロオペレータアクセス。
+        Copilot は全 IDE で Pro+/Business/Enterprise が順次対応。
+      </div>
+      <div class="card__foot">→ 配信チャネルを見る</div>
+    </a>
+  </section>
+
+  <!-- ============================================================
+       NAV TO ALL SECTIONS
+       ============================================================ -->
+  <section class="section">
+    <div class="section__head">
+      <div class="section__kicker">Table of Contents</div>
+      <h2 class="section__title">全セクション</h2>
+      <p class="section__lead">下のリストから各章へ。スマホのタブバー/メニューからもアクセス可能。</p>
+    </div>
+
+    <nav class="toc-card">
+      <div class="toc-card__title">Sections</div>
+      <ul class="toc-card__list">
+        <li><a href="pages/overview.html"><span><i class="fa-solid fa-bookmark"></i> &nbsp;1. 概要とポジション</span><i class="fa-solid fa-chevron-right"></i></a></li>
+        <li><a href="pages/pricing.html"><span><i class="fa-solid fa-yen-sign"></i> &nbsp;2. 価格 &amp; FinOps</span><i class="fa-solid fa-chevron-right"></i></a></li>
+        <li><a href="pages/context.html"><span><i class="fa-solid fa-align-left"></i> &nbsp;3. コンテキスト &amp; トークナイザ</span><i class="fa-solid fa-chevron-right"></i></a></li>
+        <li><a href="pages/reasoning.html"><span><i class="fa-solid fa-brain"></i> &nbsp;4. Adaptive Reasoning &amp; xhigh</span><i class="fa-solid fa-chevron-right"></i></a></li>
+        <li><a href="pages/vision.html"><span><i class="fa-solid fa-eye"></i> &nbsp;5. マルチモーダル（ビジョン）</span><i class="fa-solid fa-chevron-right"></i></a></li>
+        <li><a href="pages/benchmarks.html"><span><i class="fa-solid fa-chart-simple"></i> &nbsp;6. ベンチマーク総覧</span><i class="fa-solid fa-chevron-right"></i></a></li>
+        <li><a href="pages/safety.html"><span><i class="fa-solid fa-shield-halved"></i> &nbsp;7. 安全性 &amp; Mythos / Glasswing</span><i class="fa-solid fa-chevron-right"></i></a></li>
+        <li><a href="pages/channels.html"><span><i class="fa-solid fa-cloud"></i> &nbsp;8. 配信チャネル</span><i class="fa-solid fa-chevron-right"></i></a></li>
+        <li><a href="pages/migration.html"><span><i class="fa-solid fa-arrow-right-arrow-left"></i> &nbsp;9. 移行ガイド</span><i class="fa-solid fa-chevron-right"></i></a></li>
+        <li><a href="pages/personality.html"><span><i class="fa-solid fa-masks-theater"></i> &nbsp;10. 性格 &amp; 挙動の変化</span><i class="fa-solid fa-chevron-right"></i></a></li>
+        <li><a href="pages/versus.html"><span><i class="fa-solid fa-code-compare"></i> &nbsp;11. 競合比較</span><i class="fa-solid fa-chevron-right"></i></a></li>
+        <li><a href="pages/verdict.html"><span><i class="fa-solid fa-gavel"></i> &nbsp;12. 最終評価</span><i class="fa-solid fa-chevron-right"></i></a></li>
+        <li><a href="pages/faq.html"><span><i class="fa-solid fa-circle-question"></i> &nbsp;13. FAQ</span><i class="fa-solid fa-chevron-right"></i></a></li>
+        <li><a href="pages/timeline.html"><span><i class="fa-solid fa-timeline"></i> &nbsp;14. タイムライン</span><i class="fa-solid fa-chevron-right"></i></a></li>
+        <li><a href="pages/glossary.html"><span><i class="fa-solid fa-spell-check"></i> &nbsp;15. 用語集</span><i class="fa-solid fa-chevron-right"></i></a></li>
+        <li><a href="pages/sources.html"><span><i class="fa-solid fa-book"></i> &nbsp;16. 出典（43 件）</span><i class="fa-solid fa-chevron-right"></i></a></li>
+      </ul>
+    </nav>
+  </section>
+
+  <!-- ============================================================
+       PUNCHLINE
+       ============================================================ -->
+  <section class="section">
+    <div class="quote reveal">
+      最高値のロマンを期待するなら Mythos を待つべきだが、<br>
+      最強の一般公開モデルで今日から本番系を動かすなら Opus 4.7 一択。
+      <span class="quote__cite">— 本仕様書の結論（詳細は「最終評価」参照）</span>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer style="padding: var(--sp-6) 0; text-align: center; color: var(--c-fg-3); font-size: 12px;">
+    Claude Code 仕様書 · 2026-04-18<br>
+    出典 43 件からのクロスチェック版 / UI は非公式
+  </footer>
+</main>
+
+<div id="drawer-root"></div>
+<nav class="tabbar" id="tabbar"></nav>
+
+<script src="js/data.js"></script>
+<script src="js/ui.js"></script>
+<script>
+  OPUS47_UI.init("home", "Opus 4.7 仕様書");
+</script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ja" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+<meta name="theme-color" content="#0b0b0e">
+<title>出典（43 件）— Claude Opus 4.7 仕様書</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/charts.css">
+<link rel="stylesheet" href="../css/anim.css">
+</head>
+<body>
+<header class="appbar" id="appbar"></header>
+<main class="app-shell">
+  <div class="page">
+    <a class="backlink" href="../index.html"><i class="fa-solid fa-chevron-left"></i> ホームに戻る</a>
+
+    <div class="section__head reveal">
+      <div class="section__kicker">16 / 16 · SOURCES</div>
+      <h1 class="section__title">出典（43 件）</h1>
+      <p class="section__lead">
+        一次情報・プラットフォーム・報道・ベンチマーク・FinOps・技術解説・開発者レビュー・
+        Mythos 背景資料・コミュニティまでを横断した、本仕様書の全根拠。
+      </p>
+    </div>
+
+    <!-- Search -->
+    <section class="section">
+      <label for="srchBox" class="sr-only">出典を検索</label>
+      <div style="position:relative;">
+        <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--c-fg-3);"></i>
+        <input id="srchBox" type="search" placeholder="キーワードで絞り込む（例: Bedrock, ベンチ, Mythos）"
+               style="width:100%; padding: 12px 14px 12px 40px;">
+      </div>
+      <div class="segment reveal" style="margin-top: var(--sp-3);">
+        <button class="segment__btn is-active" data-cat="all">すべて</button>
+        <button class="segment__btn" data-cat="anthropic">公式</button>
+        <button class="segment__btn" data-cat="cloud">クラウド</button>
+        <button class="segment__btn" data-cat="media">報道</button>
+        <button class="segment__btn" data-cat="bench">ベンチ</button>
+        <button class="segment__btn" data-cat="finops">FinOps</button>
+        <button class="segment__btn" data-cat="guide">解説</button>
+        <button class="segment__btn" data-cat="review">レビュー</button>
+        <button class="segment__btn" data-cat="mythos">Mythos</button>
+        <button class="segment__btn" data-cat="community">コミュニティ</button>
+      </div>
+    </section>
+
+    <!-- List -->
+    <section class="section">
+      <div id="sourceList"></div>
+      <p id="noResult" hidden style="color: var(--c-fg-2); text-align:center; margin-top: var(--sp-4);">
+        該当する出典はありません。
+      </p>
+    </section>
+
+    <div class="pager">
+      <a class="pager__btn" href="glossary.html"><small>← PREV</small><strong>用語集</strong></a>
+      <a class="pager__btn pager__btn--next" href="../index.html"><small>NEXT →</small><strong>ホーム</strong></a>
+    </div>
+  </div>
+</main>
+<div id="drawer-root"></div>
+<nav class="tabbar" id="tabbar"></nav>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script>
+(function(){
+  const CATS = {
+    anthropic: { label: "Anthropic 公式", icon: "fa-solid fa-bookmark" },
+    cloud:     { label: "クラウド",      icon: "fa-solid fa-cloud" },
+    media:     { label: "報道",           icon: "fa-solid fa-newspaper" },
+    bench:     { label: "ベンチマーク",  icon: "fa-solid fa-chart-simple" },
+    finops:    { label: "FinOps",        icon: "fa-solid fa-yen-sign" },
+    guide:     { label: "技術解説",      icon: "fa-solid fa-book-open" },
+    review:    { label: "レビュー",      icon: "fa-solid fa-user-pen" },
+    mythos:    { label: "Mythos 背景",   icon: "fa-solid fa-mask" },
+    community: { label: "コミュニティ",  icon: "fa-solid fa-comments" }
+  };
+
+  const listEl = document.getElementById("sourceList");
+  const noResEl = document.getElementById("noResult");
+  const input = document.getElementById("srchBox");
+  const seg = document.querySelectorAll(".segment [data-cat]");
+  let activeCat = "all";
+  let keyword = "";
+
+  function render() {
+    const all = window.OPUS47.sources || [];
+    const kw = keyword.trim().toLowerCase();
+    const filtered = all.filter(s => {
+      if (activeCat !== "all" && s.cat !== activeCat) return false;
+      if (!kw) return true;
+      return (s.title + " " + s.url + " " + (CATS[s.cat]?.label||"")).toLowerCase().includes(kw);
+    });
+    if (filtered.length === 0) {
+      listEl.innerHTML = "";
+      noResEl.hidden = false;
+      return;
+    }
+    noResEl.hidden = true;
+    // group by cat
+    const groups = {};
+    filtered.forEach(s => { (groups[s.cat] = groups[s.cat] || []).push(s); });
+    let html = "";
+    Object.keys(CATS).forEach(cat => {
+      if (!groups[cat]) return;
+      html += `<h3 style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--c-fg-3);margin: 24px 0 8px;">
+                <i class="${CATS[cat].icon}"></i> ${CATS[cat].label}
+                <span style="color:var(--c-fg-4); font-weight:normal;">(${groups[cat].length})</span>
+              </h3>`;
+      groups[cat].forEach((s, i) => {
+        html += `
+          <a class="source" href="${escapeAttr(s.url)}" target="_blank" rel="noopener">
+            <div class="source__ico"><i class="${CATS[cat].icon}"></i></div>
+            <div class="source__meta">
+              <div class="source__title">${escapeHtml(s.title)}</div>
+              <span class="source__url">${escapeHtml(s.url)}</span>
+            </div>
+          </a>`;
+      });
+    });
+    listEl.innerHTML = html;
+  }
+
+  function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+  function escapeAttr(s){return escapeHtml(s);}
+
+  input.addEventListener("input", e => { keyword = e.target.value; render(); });
+  seg.forEach(b => b.addEventListener("click", e => {
+    seg.forEach(x => x.classList.remove("is-active"));
+    b.classList.add("is-active");
+    activeCat = b.getAttribute("data-cat");
+    render();
+  }));
+
+  render();
+})();
+OPUS47_UI.init("sources", "出典 (43)");
+</script>
+</body></html>

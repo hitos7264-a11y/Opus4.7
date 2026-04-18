@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="ja" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+<meta name="theme-color" content="#0b0b0e">
+<title>価格 &amp; FinOps — Claude Opus 4.7 仕様書</title>
+<meta name="description" content="Opus 4.7 の公称価格、キャッシュ/バッチ割引、Copilot プレミアム倍率、そして新トークナイザによる実請求のインフレを読み解く。">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/charts.css">
+<link rel="stylesheet" href="../css/anim.css">
+</head>
+<body>
+<header class="appbar" id="appbar"></header>
+<main class="app-shell">
+  <div class="page">
+    <a class="backlink" href="../index.html"><i class="fa-solid fa-chevron-left"></i> ホームに戻る</a>
+
+    <div class="section__head reveal">
+      <div class="section__kicker">2 / 16 · PRICING &amp; FINOPS</div>
+      <h1 class="section__title">価格 &amp; FinOps</h1>
+      <p class="section__lead">
+        「ステッカー価格は据え置き。でも実請求は静かに上がる」—— これが Opus 4.7 の
+        経済的な実像である。
+      </p>
+    </div>
+
+    <!-- 公称価格 -->
+    <section class="section">
+      <h2 class="section__title">公称価格（4.6 / 4.5 / 4.1 と同額）</h2>
+      <div class="pricebar reveal">
+        <div class="pricebar__row"><span class="pricebar__k">Input</span><span class="pricebar__v">$5.00 <small>/ 1M tokens</small></span></div>
+        <div class="pricebar__row"><span class="pricebar__k">Output</span><span class="pricebar__v">$25.00 <small>/ 1M tokens</small></span></div>
+        <div class="pricebar__row"><span class="pricebar__k">Prompt Cache（最大）</span><span class="pricebar__v">−90% <small>入力</small></span></div>
+        <div class="pricebar__row"><span class="pricebar__k">Batch API</span><span class="pricebar__v">−50%</span></div>
+      </div>
+      <p class="reveal">
+        Amazon Bedrock、Google Cloud Vertex AI、Microsoft Foundry、Snowflake Cortex AI
+        いずれのプラットフォームでも同じ水準が適用される。これは過去の Opus 4.6 / 4.5 / 4.1
+        と同一のレートカードであり、少なくとも <em>見出しの数字</em> は不変。
+      </p>
+    </section>
+
+    <!-- Copilot プレミアム -->
+    <section class="section">
+      <h2 class="section__title">GitHub Copilot のプレミアム倍率</h2>
+      <div class="card card--warning reveal">
+        <div class="card__label"><i class="fa-solid fa-gift"></i> 4 月 30 日までのプロモ</div>
+        <div class="card__title">7.5× premium request multiplier</div>
+        <div class="card__desc">
+          GitHub Copilot では <strong>Pro+ / Business / Enterprise</strong> の各プランで、
+          Opus 4.7 を呼び出すときのプレミアムリクエスト倍率が 7.5× に設定されている。
+          これはプロモ期間中の暫定値で、VS Code / VS / CLI / Cloud Agent / github.com /
+          iOS・Android / JetBrains / Xcode / Eclipse の全クライアントで共通。
+        </div>
+      </div>
+    </section>
+
+    <!-- 新トークナイザインフレ -->
+    <section class="section">
+      <h2 class="section__title">隠れたコスト: 新トークナイザ</h2>
+      <p class="reveal">
+        Opus 4.7 には新しいトークナイザが搭載されており、同じペイロードを投げても
+        <strong>1.00〜1.35×</strong> の範囲でトークン数が膨張する。
+        Finout や開発者 Karo Zieminski のレビューは、中間値として
+        約 <strong>1.17×</strong> を典型的に見込むべきだとしている。
+      </p>
+
+      <div class="barchart reveal" aria-label="トークン膨張率">
+        <div class="barchart__row">
+          <span class="barchart__label">英文テキスト</span>
+          <div class="barchart__track"><div class="barchart__fill" data-fill="74"></div></div>
+          <span class="barchart__value">1.05×</span>
+        </div>
+        <div class="barchart__row">
+          <span class="barchart__label">Python コード</span>
+          <div class="barchart__track"><div class="barchart__fill" data-fill="85"></div></div>
+          <span class="barchart__value">1.20×</span>
+        </div>
+        <div class="barchart__row">
+          <span class="barchart__label">JSON ペイロード</span>
+          <div class="barchart__track"><div class="barchart__fill" data-fill="90"></div></div>
+          <span class="barchart__value">1.28×</span>
+        </div>
+        <div class="barchart__row">
+          <span class="barchart__label">非英語テキスト</span>
+          <div class="barchart__track"><div class="barchart__fill" data-fill="96"></div></div>
+          <span class="barchart__value">1.35×</span>
+        </div>
+        <div class="legend">
+          <span class="legend__item"><span class="legend__sw legend__sw--brand"></span>膨張率（対 4.6 比 / 目安値）</span>
+        </div>
+      </div>
+
+      <div class="callout callout--warn reveal">
+        <div class="callout__icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div>
+          <div class="callout__title">ドロップイン置き換えを避ける</div>
+          <div class="callout__body">
+            Caylent の移行ガイドは「ハーネス（ベンチ計測系）の再ベースライン化が必須」と強調。
+            <code>count_tokens</code> の見積もり、<code>max_tokens</code> のヘッドルーム、
+            compaction 閾値の全てが 4.6 と同じ仮定では成立しない。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ケーススタディ -->
+    <section class="section">
+      <h2 class="section__title">ケーススタディ: 週次コンテンツパイプライン</h2>
+      <div class="card reveal">
+        <div class="card__label">仮置きの数値例</div>
+        <div class="card__title">月額 $10,000 のワークロードで起きること</div>
+        <div class="card__desc">
+          同じペイロードで平均 1.17× のトークンインフレが発生するとき、
+          キャッシュ/バッチを据え置いた場合の月額影響は概ね <strong>+$1,700</strong>（+17%）。
+          非英語主体のパイプラインでは <strong>+$3,500</strong>（+35%）まで跳ねる可能性がある、
+          というのが FinOps 系レビューの概算。
+        </div>
+        <div class="card__foot">
+          キャッシュ運用を詰めない限り、「価格表不変」の裏でひそかに請求が膨らむ。
+        </div>
+      </div>
+    </section>
+
+    <!-- 割引スタック -->
+    <section class="section">
+      <h2 class="section__title">割引スタックの組み方</h2>
+      <div class="accordion reveal">
+        <div class="accordion__item">
+          <button class="accordion__head"><span>1. プロンプトキャッシュを最大限</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            システムプロンプトや長い参照ドキュメントは必ずキャッシュ境界より前に置く。
+            ヒットすると入力コストは最大 90% OFF。エージェントの中核ループでは
+            節約効果が最大化しやすい。
+          </div></div>
+        </div>
+        <div class="accordion__item">
+          <button class="accordion__head"><span>2. 非同期可能なタスクは Batch API へ</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            バッチ処理は 50% 割引。大量のドキュメント要約や分類は
+            できるだけ同期呼び出しから引き剥がす。
+          </div></div>
+        </div>
+        <div class="accordion__item">
+          <button class="accordion__head"><span>3. 上流のみ 4.7、下流は Haiku/Sonnet</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            Opus 4.7 の強みは計画・分解・検証といった上流工程。
+            抽出/整形/分類のような狭い実行は、より軽量・高速・安価なモデルに委譲。
+          </div></div>
+        </div>
+        <div class="accordion__item">
+          <button class="accordion__head"><span>4. トークナイザ差分を埋めるプロンプト圧縮</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            冗長な英語指示は箇条書きや命令形に絞る。JSON は不要フィールドを削り、
+            コードは不要コメントを出力形式から除く。1.17× のインフレを 1.05× に
+            戻せれば、差はそのまま利益に変わる。
+          </div></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="pager">
+      <a class="pager__btn" href="overview.html"><small>← PREV</small><strong>概要</strong></a>
+      <a class="pager__btn pager__btn--next" href="context.html"><small>NEXT →</small><strong>コンテキスト</strong></a>
+    </div>
+  </div>
+</main>
+<div id="drawer-root"></div>
+<nav class="tabbar" id="tabbar"></nav>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script>OPUS47_UI.init("pricing", "価格 & FinOps");</script>
+</body></html>

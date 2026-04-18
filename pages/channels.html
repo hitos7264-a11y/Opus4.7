@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ja" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+<meta name="theme-color" content="#0b0b0e">
+<title>配信チャネル — Claude Opus 4.7 仕様書</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/charts.css">
+<link rel="stylesheet" href="../css/anim.css">
+</head>
+<body>
+<header class="appbar" id="appbar"></header>
+<main class="app-shell">
+  <div class="page">
+    <a class="backlink" href="../index.html"><i class="fa-solid fa-chevron-left"></i> ホームに戻る</a>
+
+    <div class="section__head reveal">
+      <div class="section__kicker">8 / 16 · CHANNELS</div>
+      <h1 class="section__title">配信チャネル</h1>
+      <p class="section__lead">
+        単一のフラッグシップモデルとしては<strong>過去最大の広がり</strong>で同日ローンチ。
+        「ガバナンス込み」でエンタープライズ本番系を最初から想定した配信設計。
+      </p>
+    </div>
+
+    <section class="section">
+      <div class="card reveal">
+        <div class="card__label"><i class="fa-brands fa-bitbucket"></i> FIRST-PARTY</div>
+        <div class="card__title">Anthropic Claude / API</div>
+        <div class="card__desc">
+          モデル ID は <code>claude-opus-4-7</code>。Claude 公式アプリと Messages API、
+          Platform Docs 側から adaptive thinking などの新 API が記述されている。
+        </div>
+      </div>
+
+      <div class="card reveal">
+        <div class="card__label"><i class="fa-brands fa-aws"></i> AWS</div>
+        <div class="card__title">Amazon Bedrock</div>
+        <div class="card__desc">
+          US East (N. Virginia) / Asia Pacific (Tokyo) / Europe (Ireland) / Europe (Stockholm) の
+          4 リージョンで同日利用開始。単に新モデルをぶら下げたのではなく、
+          <strong>プロビジョニング不要で動的スケールする次世代推論エンジン</strong>に基盤刷新。
+          顧客のプロンプト/応答は Anthropic 側にも AWS 側にもオペレータが覗けない
+          <strong>ゼロオペレータアクセス</strong>の設計。
+        </div>
+      </div>
+
+      <div class="card reveal">
+        <div class="card__label"><i class="fa-brands fa-google"></i> GOOGLE</div>
+        <div class="card__title">Vertex AI</div>
+        <div class="card__desc">
+          Google Cloud Vertex AI Model Garden より同日利用開始。
+          Google Cloud の IAM / VPC Service Controls の下で運用可能。
+        </div>
+      </div>
+
+      <div class="card reveal">
+        <div class="card__label"><i class="fa-brands fa-microsoft"></i> MICROSOFT</div>
+        <div class="card__title">Microsoft Foundry</div>
+        <div class="card__desc">
+          AI Azure の Foundry Models カタログに同日追加。
+          Azure の既存セキュリティ/コンプライアンス境界を利用可能。
+        </div>
+      </div>
+
+      <div class="card reveal">
+        <div class="card__label"><i class="fa-solid fa-snowflake"></i> SNOWFLAKE</div>
+        <div class="card__title">Snowflake Cortex AI（Public Preview）</div>
+        <div class="card__desc">
+          米国・EU で Public Preview。<strong>Cortex Code</strong>（自然言語からのパイプライン生成）、
+          <strong>AI_COMPLETE 関数</strong>（構造化/非構造化データ分析）、
+          <strong>Cortex REST API</strong>（エージェンティックなエンタープライズアプリ構築）
+          までが、Snowflake のセキュリティ境界の中で完結。
+        </div>
+      </div>
+
+      <div class="card reveal">
+        <div class="card__label"><i class="fa-brands fa-github"></i> DEV TOOLS</div>
+        <div class="card__title">GitHub Copilot</div>
+        <div class="card__desc">
+          Pro+ / Business / Enterprise の各プランで、以下クライアントのモデルピッカーから順次選択可能：<br>
+          Visual Studio Code、Visual Studio、Copilot CLI、GitHub Copilot Cloud Agent、
+          github.com、iOS / Android モバイル、JetBrains、Xcode、Eclipse。<br>
+          プレミアムリクエスト倍率 7.5×（4/30 までプロモ）。
+          Opus 4.5 / 4.6 の選択肢は数週間以内に廃止予定。
+        </div>
+      </div>
+
+      <div class="card reveal">
+        <div class="card__label"><i class="fa-solid fa-route"></i> PROXY</div>
+        <div class="card__title">OpenRouter</div>
+        <div class="card__desc">
+          OpenRouter の API Pricing & Providers にリスティング。
+          サードパーティの集約経路からも同様のレートで呼び出せる。
+        </div>
+      </div>
+    </section>
+
+    <!-- Region map -->
+    <section class="section">
+      <h2 class="section__title">リージョン（Bedrock）</h2>
+      <div class="table-wrap reveal">
+        <table class="table table--compact">
+          <thead><tr><th>Region</th><th>Code</th></tr></thead>
+          <tbody>
+            <tr><td>US East (N. Virginia)</td><td><code>us-east-1</code></td></tr>
+            <tr><td>Asia Pacific (Tokyo)</td><td><code>ap-northeast-1</code></td></tr>
+            <tr><td>Europe (Ireland)</td><td><code>eu-west-1</code></td></tr>
+            <tr><td>Europe (Stockholm)</td><td><code>eu-north-1</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Governance -->
+    <section class="section">
+      <div class="callout callout--info reveal">
+        <div class="callout__icon"><i class="fa-solid fa-building-shield"></i></div>
+        <div>
+          <div class="callout__title">「ガバナンス込み」の同日配信</div>
+          <div class="callout__body">
+            どのパートナーも「同日提供」「ガバナンス込み」を強調。
+            これは Opus 4.7 が<strong>開発者の玩具ではなく、規制業界を含むエンタープライズ本番系
+            での採用を前提に売り出されている</strong>ことの表れ。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="pager">
+      <a class="pager__btn" href="safety.html"><small>← PREV</small><strong>安全性</strong></a>
+      <a class="pager__btn pager__btn--next" href="migration.html"><small>NEXT →</small><strong>移行ガイド</strong></a>
+    </div>
+  </div>
+</main>
+<div id="drawer-root"></div>
+<nav class="tabbar" id="tabbar"></nav>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script>OPUS47_UI.init("channels", "配信チャネル");</script>
+</body></html>

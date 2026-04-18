@@ -1,0 +1,299 @@
+/* ================================================================
+   layout.css — 全体レイアウト・ナビゲーション・タブバー
+   スマホ特化のため、最大幅は 520px 程度に抑え、
+   画面が広い場合でも常に「1カラムのモバイル体験」に見えるよう
+   中央寄せを徹底する。
+   ================================================================ */
+
+/* ---------- App container ------------------------------------- */
+.app-shell {
+  position: relative;
+  width: 100%;
+  max-width: var(--max-w-phone);
+  margin: 0 auto;
+  padding: 0 var(--sp-4);
+}
+
+/* ---------- Top App Bar ---------------------------------------- */
+.appbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: calc(var(--nav-h) + var(--safe-top));
+  padding-top: var(--safe-top);
+  background: color-mix(in srgb, var(--c-bg-0) 85%, transparent);
+  backdrop-filter: saturate(160%) blur(14px);
+  -webkit-backdrop-filter: saturate(160%) blur(14px);
+  border-bottom: 1px solid var(--c-line-1);
+  z-index: var(--z-sticky);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--dur-2) var(--ease-out),
+              border-color var(--dur-2) var(--ease-out);
+}
+.appbar__inner {
+  width: 100%;
+  max-width: var(--max-w-phone);
+  height: var(--nav-h);
+  padding: 0 var(--sp-4);
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+  gap: var(--sp-3);
+}
+.appbar__title {
+  text-align: center;
+  font-size: var(--fs-14);
+  font-weight: var(--fw-semi);
+  letter-spacing: 0.04em;
+  color: var(--c-fg-0);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.appbar__title small {
+  display: block;
+  font-size: 10px;
+  color: var(--c-fg-3);
+  font-weight: var(--fw-reg);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.appbar__btn {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-pill);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--c-fg-1);
+  transition: background var(--dur-1) var(--ease-out);
+}
+.appbar__btn:hover { background: var(--c-bg-3); }
+.appbar__btn i { font-size: 16px; }
+
+/* ---------- Bottom tab bar ------------------------------------ */
+.tabbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: calc(var(--tabbar-h) + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+  background: color-mix(in srgb, var(--c-bg-1) 94%, transparent);
+  backdrop-filter: saturate(160%) blur(14px);
+  -webkit-backdrop-filter: saturate(160%) blur(14px);
+  border-top: 1px solid var(--c-line-1);
+  z-index: var(--z-sticky);
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+.tabbar__inner {
+  width: 100%;
+  max-width: var(--max-w-phone);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+.tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  color: var(--c-fg-3);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition: color var(--dur-1) var(--ease-out);
+  position: relative;
+}
+.tab i { font-size: 18px; }
+.tab[aria-current="page"],
+.tab.is-active {
+  color: var(--c-brand-400);
+}
+.tab[aria-current="page"]::before,
+.tab.is-active::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  width: 30px;
+  height: 3px;
+  border-radius: var(--r-pill);
+  background: var(--c-brand-500);
+  box-shadow: 0 0 10px var(--c-brand-500);
+}
+
+/* ---------- Page / section -------------------------------------- */
+.page {
+  padding: var(--sp-5) 0 var(--sp-6);
+  animation: pageIn var(--dur-4) var(--ease-out);
+}
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+.section { margin-bottom: var(--sp-9); }
+.section__head { margin-bottom: var(--sp-4); }
+.section__kicker {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--c-brand-400);
+  font-weight: var(--fw-semi);
+  margin-bottom: var(--sp-2);
+}
+.section__title { font-size: var(--fs-22); }
+.section__lead {
+  color: var(--c-fg-2);
+  font-size: var(--fs-14);
+  margin-top: var(--sp-2);
+  line-height: var(--lh-loose);
+}
+
+/* ---------- Hero -------------------------------------------------- */
+.hero {
+  position: relative;
+  padding: var(--sp-7) 0 var(--sp-7);
+  text-align: left;
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  isolation: isolate;
+  margin-bottom: var(--sp-7);
+}
+.hero::before {
+  content: "";
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(242,107,26,.35), transparent 55%),
+    radial-gradient(circle at 90% 80%, rgba(75,141,255,.25), transparent 60%),
+    linear-gradient(180deg, var(--c-bg-1), var(--c-bg-0));
+  z-index: -1;
+}
+.hero::after {
+  content: "";
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(transparent 95%, rgba(255,255,255,.04) 95%),
+    linear-gradient(90deg, transparent 95%, rgba(255,255,255,.04) 95%);
+  background-size: 24px 24px;
+  opacity: .35;
+  z-index: -1;
+}
+.hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 6px 12px;
+  border-radius: var(--r-pill);
+  background: rgba(242,107,26,.12);
+  color: var(--c-brand-300);
+  font-size: 11px;
+  font-weight: var(--fw-semi);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 1px solid rgba(242,107,26,.35);
+  margin: 0 var(--sp-4) var(--sp-4);
+}
+.hero__title {
+  padding: 0 var(--sp-4);
+  font-size: var(--fs-36);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--sp-3);
+}
+.hero__title .accent {
+  background: linear-gradient(135deg, var(--c-brand-300), var(--c-brand-500));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hero__subtitle {
+  padding: 0 var(--sp-4);
+  color: var(--c-fg-2);
+  font-size: var(--fs-14);
+  max-width: 480px;
+  line-height: var(--lh-loose);
+}
+.hero__meta {
+  padding: var(--sp-4) var(--sp-4) 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+/* ---------- Grid ---------------------------------------------- */
+.grid { display: grid; gap: var(--sp-3); }
+.grid--2 { grid-template-columns: 1fr 1fr; }
+.grid--3 { grid-template-columns: repeat(3, 1fr); }
+
+/* ---------- Page back link ------------------------------------ */
+.backlink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-13);
+  color: var(--c-fg-2);
+  margin-bottom: var(--sp-4);
+}
+.backlink:hover { color: var(--c-brand-400); }
+
+/* ---------- Side drawer --------------------------------------- */
+.drawer-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.55);
+  z-index: var(--z-overlay);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-3) var(--ease-out);
+}
+.drawer-backdrop.is-open { opacity: 1; pointer-events: auto; }
+
+.drawer {
+  position: fixed;
+  top: 0; right: 0;
+  height: 100dvh;
+  width: min(86vw, 360px);
+  background: var(--c-bg-1);
+  border-left: 1px solid var(--c-line-1);
+  box-shadow: var(--sh-3);
+  z-index: var(--z-drawer);
+  transform: translateX(100%);
+  transition: transform var(--dur-3) var(--ease-io);
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--safe-top);
+}
+.drawer.is-open { transform: translateX(0); }
+.drawer__head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--sp-4);
+  border-bottom: 1px solid var(--c-line-1);
+}
+.drawer__body {
+  flex: 1; overflow-y: auto; padding: var(--sp-3) var(--sp-2);
+}
+.drawer__list { list-style: none; margin: 0; padding: 0; }
+.drawer__list li { margin: 0; }
+.drawer__link {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  color: var(--c-fg-1);
+  border-radius: var(--r-md);
+  font-size: var(--fs-14);
+  transition: background var(--dur-1) var(--ease-out);
+}
+.drawer__link i { color: var(--c-brand-400); width: 22px; text-align: center; }
+.drawer__link:hover { background: var(--c-bg-3); color: var(--c-fg-0); }
+.drawer__section-title {
+  padding: var(--sp-4) var(--sp-4) var(--sp-2);
+  font-size: 10px;
+  color: var(--c-fg-3);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}

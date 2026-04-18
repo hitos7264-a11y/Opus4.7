@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="ja" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+<meta name="theme-color" content="#0b0b0e">
+<title>コンテキスト &amp; トークナイザ — Claude Opus 4.7 仕様書</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/charts.css">
+<link rel="stylesheet" href="../css/anim.css">
+</head>
+<body>
+<header class="appbar" id="appbar"></header>
+<main class="app-shell">
+  <div class="page">
+    <a class="backlink" href="../index.html"><i class="fa-solid fa-chevron-left"></i> ホームに戻る</a>
+
+    <div class="section__head reveal">
+      <div class="section__kicker">3 / 16 · CONTEXT &amp; TOKENIZER</div>
+      <h1 class="section__title">コンテキスト &amp; トークナイザ</h1>
+      <p class="section__lead">
+        1M 入力 / 128k 出力は 4.6 から維持。アーキテクチャは
+        マルチヘッドアテンション + 絶対位置埋め込み。<br>
+        しかし長コンテキストからの retrieval は <strong>退行</strong>。
+      </p>
+    </div>
+
+    <section class="section">
+      <div class="grid grid--2 stagger">
+        <div class="stat">
+          <span class="stat__label">入力ウィンドウ</span>
+          <span class="stat__value">1M</span>
+          <span class="stat__delta is-flat">tokens</span>
+        </div>
+        <div class="stat">
+          <span class="stat__label">最大出力</span>
+          <span class="stat__value">128k</span>
+          <span class="stat__delta is-flat">tokens</span>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Attention</span>
+          <span class="stat__value" style="font-size:14px;">Multi-head</span>
+          <span class="stat__delta is-flat">Absolute pos.</span>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Tokenizer</span>
+          <span class="stat__value" style="font-size:14px;">新世代</span>
+          <span class="stat__delta is-down"><i class="fa-solid fa-arrow-trend-up"></i> 1.17× typ.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Long context regression -->
+    <section class="section">
+      <h2 class="section__title">長ctx retrieval の退行</h2>
+      <p class="reveal">
+        Anthropic 自身のモデルカードに記載され、Hacker News で広くシェアされたグラフによれば、
+        長文からの情報検索を測る長コンテキスト retrieval の総合スコアは
+        <strong>91.9% → 59.2%</strong>。524k〜1024k tokens 帯では
+        <strong>78.3% → 32.2%</strong> まで沈む。
+      </p>
+
+      <div class="barchart reveal">
+        <div class="barchart__row">
+          <span class="barchart__label">総合 — 4.6</span>
+          <div class="barchart__track"><div class="barchart__fill" data-fill="91.9"></div></div>
+          <span class="barchart__value">91.9%</span>
+        </div>
+        <div class="barchart__row">
+          <span class="barchart__label">総合 — 4.7</span>
+          <div class="barchart__track"><div class="barchart__fill barchart__fill--gold" data-fill="59.2"></div></div>
+          <span class="barchart__value">59.2%</span>
+        </div>
+        <div class="barchart__row">
+          <span class="barchart__label">524k〜1024k — 4.6</span>
+          <div class="barchart__track"><div class="barchart__fill" data-fill="78.3"></div></div>
+          <span class="barchart__value">78.3%</span>
+        </div>
+        <div class="barchart__row">
+          <span class="barchart__label">524k〜1024k — 4.7</span>
+          <div class="barchart__track"><div class="barchart__fill barchart__fill--gold" data-fill="32.2"></div></div>
+          <span class="barchart__value">32.2%</span>
+        </div>
+      </div>
+
+      <div class="callout callout--danger reveal">
+        <div class="callout__icon"><i class="fa-solid fa-circle-exclamation"></i></div>
+        <div>
+          <div class="callout__title">「1M 全部覚えている」期待は危険</div>
+          <div class="callout__body">
+            r/ClaudeAI では「これは単なる誤差ではなく全面的な regression」という批判も。
+            少なくとも 524k 以上を前提にした RAG レス設計はやり直しが必要。
+          </div>
+        </div>
+      </div>
+
+      <div class="quote reveal">
+        以前のモデルのスコアは、実際には想起できていなかった箇所も
+        正解扱いにする評価だった可能性がある。4.7 は誠実に自己報告している。
+        <span class="quote__cite">— Anthropic の自己弁護的説明（モデルカードより要約）</span>
+      </div>
+      <p class="reveal" style="font-size:14px; color:var(--c-fg-2);">
+        これを額面どおり受け取るかは立場によって分かれる。
+        「正直になった」とも「忘れっぽくなった」とも読める性質の変化である点は押さえておきたい。
+      </p>
+    </section>
+
+    <!-- Tokenizer -->
+    <section class="section">
+      <h2 class="section__title">新トークナイザ</h2>
+      <p class="reveal">
+        同じ英文・同じ Python コード・同じ JSON を投げても、トークン数は
+        <strong>1.00〜1.35×</strong>に膨らむ。特にコード、構造化データ、非英語テキストでの
+        インフレ率が高い。<code>count_tokens</code> の見積もりもコンテキストウィンドウ消費計算も
+        狂うため、ヘッドルームの再計算が必須。
+      </p>
+      <div class="table-wrap reveal">
+        <table class="table table--compact">
+          <thead><tr><th>影響項目</th><th>再調整の要否</th></tr></thead>
+          <tbody>
+            <tr><td><code>max_tokens</code> の上限</td><td>必須</td></tr>
+            <tr><td>compaction 閾値</td><td>必須</td></tr>
+            <tr><td>コスト見積もり / 予算アラート</td><td>必須</td></tr>
+            <tr><td>長文の chunking サイズ</td><td>推奨</td></tr>
+            <tr><td>スライディングウィンドウの overlap</td><td>推奨</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Architecture -->
+    <section class="section">
+      <h2 class="section__title">アーキテクチャ公開情報</h2>
+      <div class="card reveal">
+        <div class="card__title"><i class="fa-solid fa-microchip"></i> Multi-head Attention + Absolute Positional Embedding</div>
+        <div class="card__desc">
+          apxml.com の技術仕様ページによれば、Opus 4.7 は
+          従来通りマルチヘッドアテンションと絶対位置埋め込みを採用している。
+          パラメータ数や具体的な head 数などの内部構成は非公開。
+        </div>
+        <div class="card__foot">
+          出典: apxml.com / Claude Opus 4.7 Model Specifications
+        </div>
+      </div>
+    </section>
+
+    <div class="pager">
+      <a class="pager__btn" href="pricing.html"><small>← PREV</small><strong>価格</strong></a>
+      <a class="pager__btn pager__btn--next" href="reasoning.html"><small>NEXT →</small><strong>Reasoning</strong></a>
+    </div>
+  </div>
+</main>
+<div id="drawer-root"></div>
+<nav class="tabbar" id="tabbar"></nav>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script>OPUS47_UI.init("context", "コンテキスト");</script>
+</body></html>

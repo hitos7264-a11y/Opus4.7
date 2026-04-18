@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="ja" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+<meta name="theme-color" content="#0b0b0e">
+<title>FAQ — Claude Opus 4.7 仕様書</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/charts.css">
+<link rel="stylesheet" href="../css/anim.css">
+</head>
+<body>
+<header class="appbar" id="appbar"></header>
+<main class="app-shell">
+  <div class="page">
+    <a class="backlink" href="../index.html"><i class="fa-solid fa-chevron-left"></i> ホームに戻る</a>
+
+    <div class="section__head reveal">
+      <div class="section__kicker">13 / 16 · FAQ</div>
+      <h1 class="section__title">よくある質問</h1>
+      <p class="section__lead">現場で聞かれる 20 問を一問一答で。</p>
+    </div>
+
+    <section class="section">
+      <div class="accordion reveal">
+
+        <div class="accordion__item">
+          <button class="accordion__head"><span>Q1. モデル ID は？</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            <code>claude-opus-4-7</code>。Bedrock / Vertex / Foundry / Cortex でもほぼ同等の識別子。
+          </div></div>
+        </div>
+
+        <div class="accordion__item">
+          <button class="accordion__head"><span>Q2. 価格は 4.6 から変わった？</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            公称レートは入力 $5 / 出力 $25 / 1M tok と変更なし。ただし新トークナイザで
+            実請求は 1.00〜1.35× に膨らむため、実効単価は上がる。
+          </div></div>
+        </div>
+
+        <div class="accordion__item">
+          <button class="accordion__head"><span>Q3. コンテキストウィンドウは？</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            入力 1M tokens、最大出力 128k tokens。ただし長 ctx retrieval の精度は退行。
+          </div></div>
+        </div>
+
+        <div class="accordion__item">
+          <button class="accordion__head"><span>Q4. xhigh って何？</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            新設された effort 段階。high と max の中間で、長時間エージェント / Claude Code 向け。
+            Claude Code の既定は全プラン xhigh。
+          </div></div>
+        </div>
+
+        <div class="accordion__item">
+          <button class="accordion__head"><span>Q5. <code>temperature</code> を指定するとどうなる？</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            既定以外の値は 400 エラー。<code>top_p</code> / <code>top_k</code> も同様。
+          </div></div>
+        </div>
+
+        <div class="accordion__item">
+          <button class="accordion__head"><span>Q6. 思考テキスト（CoT）は見られる？</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            既定で非表示。<code>display: "summarized"</code> 相当をオプトインすると要約表示される。
+          </div></div>
+        </div>
+
+        <div class="accordion__item">
+          <button class="accordion__head"><span>Q7. Mythos と 4.7 はどちらが強い？</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            能力ベンチでは Mythos が上（CyberGym 83.1% / SWE Verified 93.9% / honesty 95.4%）。
+            ただし Mythos は限定プレビューで一般利用不可。
+          </div></div>
+        </div>
+
+        <div class="accordion__item">
+          <button class="accordion__head"><span>Q8. 画像解像度はどこまで？</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            長辺 2,576px、約 3.75MP まで。超えた場合はモデル側で処理されるが
+            必要なければユーザー側でのダウンサンプリングを推奨。
+          </div></div>
+        </div>
+
+        <div class="accordion__item">
+          <button class="accordion__head"><span>Q9. 日本語タスクへの影響は？</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            非英語テキストはトークナイザ膨張率が最大レンジ（〜1.35×）に寄りやすい。
+            日本語主体のパイプラインはコスト影響が大きく出る可能性がある。
+          </div></div>
+        </div>
+
+        <div class="accordion__item">
+          <button class="accordion__head"><span>Q10. GitHub Copilot で使うには？</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            Pro+ / Business / Enterprise の各プランで、モデルピッカーから選択可能。
+            4/30 までは 7.5× のプレミアム倍率プロモ。
+          </div></div>
+        </div>
+
+        <div class="accordion__item">
+          <button class="accordion__head"><span>Q11. Bedrock のどのリージョン？</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            us-east-1 / ap-northeast-1 / eu-west-1 / eu-north-1 の 4 リージョンで同日ローンチ。
+          </div></div>
+        </div>
+
+        <div class="accordion__item">
+          <button class="accordion__head"><span>Q12. セキュリティ研究で使いたい</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            Cyber Verification Program に登録して審査を通すことで、
+            通常ブロックされるカテゴリーも解放可能。
+          </div></div>
+        </div>
+
+        <div class="accordion__item">
+          <button class="accordion__head"><span>Q13. 以前のプロンプトはそのまま使える？</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            基本は動くが、行間を読む前提のプロンプトはフラットな出力になりがち。
+            受け入れ基準・形式・禁止事項を明示する書き直しが推奨。
+          </div></div>
+        </div>
+
+        <div class="accordion__item">
+          <button class="accordion__head"><span>Q14. 何が Breaking change？</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            (1) サンプリングパラメータ固定化、(2) <code>budget_tokens</code> 廃止、
+            (3) 思考テキスト既定非表示、(4) 新トークナイザ、(5) Claude Code 既定 xhigh 昇格。
+          </div></div>
+        </div>
+
+        <div class="accordion__item">
+          <button class="accordion__head"><span>Q15. honesty rate とは？</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            Anthropic 内部のハルシネーション耐性評価。Opus 4.7 は 92%、Mythos は 95.4%。
+          </div></div>
+        </div>
+
+        <div class="accordion__item">
+          <button class="accordion__head"><span>Q16. 長文を確実に覚えてほしい</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            524k+ 帯は 32.2% と大きく退行。RAG、階層要約、.md ファイル常駐型の
+            スキャフォールディングで補完するのが現実解。
+          </div></div>
+        </div>
+
+        <div class="accordion__item">
+          <button class="accordion__head"><span>Q17. 4.5 / 4.6 は使い続けられる？</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            GitHub Copilot は「数週間以内に 4.5/4.6 の選択肢を廃止する」と宣言。
+            Anthropic 本体の API は段階的 deprecation が通常。
+          </div></div>
+        </div>
+
+        <div class="accordion__item">
+          <button class="accordion__head"><span>Q18. 4.7 を下流の単純タスクに使うのは？</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            もったいない。価格・レイテンシの観点から Haiku / Sonnet 系へ委譲が推奨。
+          </div></div>
+        </div>
+
+        <div class="accordion__item">
+          <button class="accordion__head"><span>Q19. System Card はどこで読める？</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            232 ページの PDF が sanity.io で公開されている。本仕様書の「出典」ページから直接リンク。
+          </div></div>
+        </div>
+
+        <div class="accordion__item">
+          <button class="accordion__head"><span>Q20. 結局、誰向けのモデル？</span><i class="fa-solid fa-chevron-down chev"></i></button>
+          <div class="accordion__body"><div class="accordion__body-inner">
+            「規制業界を含むエンタープライズ本番系で、長時間エージェント・計画・検証を
+            安定して回したい」組織向け。開発者の玩具ではなく、運用前提のモデル。
+          </div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="pager">
+      <a class="pager__btn" href="verdict.html"><small>← PREV</small><strong>最終評価</strong></a>
+      <a class="pager__btn pager__btn--next" href="timeline.html"><small>NEXT →</small><strong>タイムライン</strong></a>
+    </div>
+  </div>
+</main>
+<div id="drawer-root"></div>
+<nav class="tabbar" id="tabbar"></nav>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script>OPUS47_UI.init("faq", "FAQ");</script>
+</body></html>
